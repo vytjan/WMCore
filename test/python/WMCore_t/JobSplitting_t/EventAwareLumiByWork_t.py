@@ -1,9 +1,10 @@
 """
 _EventAwareLumiByWork_t_
 
-Lumi based splitting test with awareness of events per lumi.
+Lumi based splitting test with awareness of events per lumi, using the DataStructs classes.
 It must pass the same tests as the LumiBased algorithm, plus
 specific ones for this algorithm.
+See WMCore/WMBS/JobSplitting/ for the WMBS (SQL database) version.
 """
 
 from __future__ import division, print_function
