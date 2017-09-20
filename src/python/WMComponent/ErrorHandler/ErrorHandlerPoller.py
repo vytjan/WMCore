@@ -226,7 +226,7 @@ class ErrorHandlerPoller(BaseWorkerThread):
                         # theh check if the exit code matches
                         if self.noRetryByType[job['type']] in report.getExitCodes():
                             # remove the warning later!!!!!!!!
-                            logging.warning("Tier0 job %i of type %s containing the error code %i exhausted.", job['id'], job['type'], self.noRetryByType[job['type']])
+                            # logging.warning("Tier0 job %i of type %s containing the error code %i exhausted.", job['id'], job['type'], self.noRetryByType[job['type']])
                             msg = "Tier0 job %i of type %s containing the error code %i exhausted." % (job['id'], job['type'], self.noRetryByType[job['type']])
                             logging.debug(msg)
                             exhaustJobs.append(job)
@@ -385,7 +385,8 @@ class ErrorHandlerPoller(BaseWorkerThread):
         try:
             myThread = threading.currentThread()
             self.handleErrors()
-            print(lll)
+            # this was used just to fail the unit test to see the output.
+            # print(lll)
         except (CouchConnectionError, HTTPException) as ex:
             if getattr(myThread, 'transaction', None) is not None:
                 myThread.transaction.rollback()

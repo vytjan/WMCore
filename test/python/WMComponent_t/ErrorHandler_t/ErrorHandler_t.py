@@ -481,6 +481,47 @@ class ErrorHandlerTest(unittest.TestCase):
 
         return
 
+    def testF_Tier0NoRetryByType(self):
+        """
+        _Tier0NoRetryByType_
+
+        Test our ability to fail jobs based on job type and job exit code (Tier0 specific)
+        """
+        workloadName = 'TestWorkload'
+
+        self.createWorkload(workloadName = workloadName)
+        workloadPath = os.path.join(self.testDir, 'workloadTest', workloadName,
+                                    'WMSandbox', 'WMWorkload.pkl')
+
+        fwjrPath = os.path.join(WMCore.WMBase.getTestBase(),
+                                "WMComponent_t/JobAccountant_t",
+                                "fwjrs/tier0JobReport.pkl")
+
+        testJobGroup = self.createTestJobGroup(nJobs = self.nJobs,
+                                               workloadPath = workloadPath,
+                                               fwjrPath = fwjrPath)
+
+        config = self.getConfig()
+        config.ErrorHandler.readFWJR         = True
+        # here we define the noRetryByType dict used in the config:
+        config.ErrorHandler.noRetryByType = {"Processing": 1234}
+        changer = ChangeState(config)
+        changer.propagate(testJobGroup.jobs, 'created', 'new')
+        changer.propagate(testJobGroup.jobs, 'executing', 'created')
+        changer.propagate(testJobGroup.jobs, 'complete', 'executing')
+        changer.propagate(testJobGroup.jobs, 'jobfailed', 'complete')
+
+        testErrorHandler = ErrorHandlerPoller(config)
+        testErrorHandler.setup(None)
+        testErrorHandler.algorithm(None)
+
+        # This should exhaust all "Processing" jobs with error code 1234.
+        idList = self.getJobs.execute(state = 'JobFailed')
+        self.assertEqual(len(idList), 0)
+        idList = self.getJobs.execute(state = 'Exhausted')
+        self.assertEqual(len(idList), self.nJobs)
+
+        return
 
     @attr('integration')
     def testZ_Profile(self):
