@@ -88,6 +88,8 @@ class ErrorHandlerPoller(BaseWorkerThread):
         else:
             self.reqAuxDB = ReqMgrAux(self.config.General.ReqMgr2ServiceURL)
 
+        self.noRetryByType = getattr(self.config.ErrorHandler, 'noRetryByType', {})
+
         return
 
     def setup(self, parameters=None):
@@ -222,6 +224,19 @@ class ErrorHandlerPoller(BaseWorkerThread):
                 if times is not None:
                     startTime = times['startTime']
                     stopTime = times['stopTime']
+
+                # Don't retry specific jobs (by type and exit code).
+                if self.noRetryByType:
+                    #check if a job type matches
+                    if job['type'] in self.noRetryByType.keys():
+                        # theh check if the exit code matches
+                        if self.noRetryByType[job['type']] in report.getExitCodes():
+                            # remove the warning later!!!!!!!!
+                            logging.warning("Tier0 job %i of type %s containing the error code %i exhausted.", job['id'], job['type'], self.noRetryByType[job['type']])
+                            msg = "Tier0 job %i of type %s containing the error code %i exhausted." % (job['id'], job['type'], self.noRetryByType[job['type']])
+                            logging.debug(msg)
+                            exhaustJobs.append(job)
+                            continue
 
                 # correct the location if the original location is different from recorded in wmbs
                 # WARNING: we are not updating job location in wmbs only updating in couchdb by doing this.
@@ -377,6 +392,7 @@ class ErrorHandlerPoller(BaseWorkerThread):
         try:
             myThread = threading.currentThread()
             self.handleErrors()
+            print(lll)
         except (CouchConnectionError, HTTPException) as ex:
             if getattr(myThread, 'transaction', None) is not None:
                 myThread.transaction.rollback()
