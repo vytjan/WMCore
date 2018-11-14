@@ -23,7 +23,11 @@ Status: <b>$status</b> to
 <select id="RequestStatus" name="RequestStatus">
 <option value="$status">$status</option>
 #for val in $transitions
-<option value="$val">$val</option>
+#if val in $humanStates
+  <option value="$val">$val</option>
+#else
+  <option value="$val" disabled>$val</option>
+#end if
 #end for
 </select>
 </li>
@@ -40,6 +44,8 @@ $table
 $tasksConfigs
 </br>
 $sTransition
+</br>
+$pTransition
 </div>
 
 <div name="edit-json" id="edit-json" class="hide">

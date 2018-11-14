@@ -49,6 +49,17 @@ class ResourceControl(WMConnectionBase):
                              transaction=self.existingTransaction())
         return
 
+    def insertPNNs(self, pnns):
+        """
+        _insertPNNs_
+
+        Insert a list of standalone PNNs into WMBS (usually used for MSS nodes)
+        """
+        addAction = self.wmbsDAOFactory(classname="Locations.AddPNNs")
+        addAction.execute(pnns=pnns, conn=self.getDBConn(),
+                          transaction=self.existingTransaction())
+        return
+
     def changeSiteState(self, siteName, state):
         """
         _changeSiteState_
@@ -62,7 +73,7 @@ class ResourceControl(WMConnectionBase):
         jobInfo = executingJobs.execute(state='executing')
 
         if jobInfo:
-            bossAir = BossAirAPI(self.config, noSetup=True)
+            bossAir = BossAirAPI(self.config)
             jobtokill = bossAir.updateSiteInformation(jobInfo, siteName, state in state2ExitCode)
 
             ercode = state2ExitCode.get(state, 71300)

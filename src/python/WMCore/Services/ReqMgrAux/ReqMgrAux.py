@@ -111,16 +111,16 @@ class ReqMgrAux(Service):
         """Mind your own business. Delete the agent config from ReqMgrAux"""
         self["requests"].delete('wmagentconfig/%s' % agentName)
 
-    def updateAgentDrainingMode(self, agentName, drainFlag):
+    def updateAgentConfig(self, agentName, key, value):
         # update config DB
-        resp = self.updateRecords('wmagentconfig/%s' % agentName, {"AgentDrainMode": drainFlag})
+        resp = self.updateRecords('wmagentconfig/%s' % agentName, {key: value})
 
         if len(resp) == 1 and resp[0].get("ok", False):
-            self["logger"].info("update drain mode suceeded: %s" % drainFlag)
+            self["logger"].info("update agent key %s to %s successful." % (key, value))
             return True
         else:
-            self["logger"].warning("update agent drain mode failed: it should be %s, response: %s" %
-                                   (drainFlag, resp))
+            self["logger"].warning("update agent config failed: %s should be %s, response: %s" %
+                                   (key, value, resp))
             return False
 
     def getCampaignConfig(self, campaignName):
@@ -172,10 +172,8 @@ class ReqMgrAux(Service):
         # update config DB
         resp = self.updateRecords('campaignconfig/%s' % campaignName, propDict)
 
-        if len(resp) == 1 and resp[0].get("ok", False):
-            return True
-        else:
-            return False
+        return bool(len(resp) == 1 and resp[0].get("ok", False))
+
 
 AUXDB_AGENT_CONFIG_CACHE = {}
 
@@ -200,7 +198,6 @@ def isDrainMode(config):
         # if the cache is empty this will raise Key not exist exception.
         return AUXDB_AGENT_CONFIG_CACHE["UserDrainMode"] or AUXDB_AGENT_CONFIG_CACHE["AgentDrainMode"]
 
-
 def listDiskUsageOverThreshold(config, updateDB):
     """
     check whether disk usage is over threshold,
@@ -208,20 +205,18 @@ def listDiskUsageOverThreshold(config, updateDB):
     if updateDB is True update the aux couch db value.
     This function contains both check an update to avoide multiple db calls.
     """
+    defaultDiskThreshold = 85
+    defaultIgnoredDisks = []
     if hasattr(config, "Tier0Feeder"):
-        ignoredDisks = []
-        diskUseThreshold = 85
         # get the value from config.
-        if hasattr(config.AgentStatusWatcher, "ignoreDisks"):
-            ignoredDisks = config.AgentStatusWatcher.ignoreDisks
-        if hasattr(config.AgentStatusWatcher, "diskUseThreshold"):
-            diskUseThreshold = config.AgentStatusWatcher.diskUseThreshold
+        ignoredDisks = getattr(config.AgentStatusWatcher, "ignoreDisks", defaultIgnoredDisks)
+        diskUseThreshold = getattr(config.AgentStatusWatcher, "diskUseThreshold", defaultDiskThreshold)
         t0Flag = True
     else:
         reqMgrAux = ReqMgrAux(config.General.ReqMgr2ServiceURL)
         agentConfig = reqMgrAux.getWMAgentConfig(config.Agent.hostName)
-        diskUseThreshold = agentConfig["DiskUseThreshold"]
-        ignoredDisks = agentConfig["IgnoreDisks"]
+        diskUseThreshold = agentConfig.get("DiskUseThreshold", defaultDiskThreshold)
+        ignoredDisks = agentConfig.get("IgnoreDisks", defaultIgnoredDisks)
         t0Flag = False
 
     # Disk space warning
@@ -235,6 +230,6 @@ def listDiskUsageOverThreshold(config, updateDB):
     if updateDB and not t0Flag:
         agentDrainMode = bool(len(overThresholdDisks))
         if agentDrainMode != agentConfig["AgentDrainMode"]:
-            reqMgrAux.updateAgentDrainingMode(config.Agent.hostName, agentDrainMode)
+            reqMgrAux.updateAgentConfig(config.Agent.hostName, "AgentDrainMode", agentDrainMode)
 
     return overThresholdDisks

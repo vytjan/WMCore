@@ -11,19 +11,17 @@ import os.path
 import re
 import threading
 import time
-
 import classad
 import htcondor
 
+from Utils import FileTools
 from Utils.IteratorTools import convertFromUnicodeToStr, grouper
-import WMCore.Algorithms.BasicAlgos as BasicAlgos
 from WMCore.BossAir.Plugins.BasePlugin import BasePlugin
 from WMCore.Credential.Proxy import Proxy
 from WMCore.DAOFactory import DAOFactory
 from WMCore.FwkJobReport.Report import Report
 from WMCore.WMInit import getWMBASE
 from WMCore.Lexicon import getIterMatchObjectOnRegexp, WMEXCEPTION_REGEXP, CONDOR_LOG_FILTER_REGEXP
-
 
 class SimpleCondorPlugin(BasePlugin):
     """
@@ -109,7 +107,8 @@ class SimpleCondorPlugin(BasePlugin):
         # TODO(bbockelm): Remove reqStr once HLT has upgraded.
         self.reqStr = ('((REQUIRED_OS=?="any") || '
                        '(GLIDEIN_REQUIRED_OS =?= "any") || '
-                       'stringListMember(GLIDEIN_REQUIRED_OS, REQUIRED_OS))')
+                       'stringListMember(GLIDEIN_REQUIRED_OS, REQUIRED_OS)) && '
+                       '(AuthenticatedIdentity =!= "volunteer-node@cern.ch")')
         if hasattr(config.BossAir, 'condorRequirementsString'):
             self.reqStr = config.BossAir.condorRequirementsString
 
@@ -118,6 +117,8 @@ class SimpleCondorPlugin(BasePlugin):
         self.x509userproxy = proxy.getProxyFilename()
         self.x509userproxysubject = proxy.getSubject()
         self.x509userproxyfqan = proxy.getAttributeFromProxy(self.x509userproxy)
+        # Remove the x509 ads if the job is matching a volunteer resource
+        self.x509Expr = 'ifThenElse("$$(GLIDEIN_CMSSite)" =?= "T3_CH_Volunteer",undefined,"%s")'
 
         return
 
@@ -125,8 +126,7 @@ class SimpleCondorPlugin(BasePlugin):
         """
         _submit_
 
-
-        Submit jobs for one subscription
+        Submits jobs to the condor queue
         """
         successfulJobs = []
         failedJobs = []
@@ -145,11 +145,13 @@ class SimpleCondorPlugin(BasePlugin):
 
             logging.debug("Start: Submitting %d jobs using Condor Python SubmitMany", len(procAds))
             try:
-                clusterId = schedd.submitMany(clusterAd, procAds)
+                # 4th argument has to be None otherwise HTCondor leaks the result ads
+                # through it (as of 8.7.x). More info in WMCore/#8729
+                clusterId = schedd.submitMany(clusterAd, procAds, False, None)
             except Exception as ex:
                 logging.error("SimpleCondorPlugin job submission failed.")
+                logging.exception(str(ex))
                 logging.error("Moving on the the next batch of jobs and/or cycle....")
-                logging.exception(ex)
 
                 condorErrorReport = Report()
                 condorErrorReport.addError("JobSubmit", 61202, "CondorError", str(ex))
@@ -157,7 +159,7 @@ class SimpleCondorPlugin(BasePlugin):
                     job['fwjr'] = condorErrorReport
                     failedJobs.append(job)
             else:
-                logging.debug("Finish: Submitting jobs using Condor Python SubmitMany")
+                logging.debug("Job submission to condor succeeded, clusterId is %s", clusterId)
                 for index, job in enumerate(jobsReady):
                     job['gridid'] = "%s.%s" % (clusterId, index)
                     job['status'] = 'Idle'
@@ -286,7 +288,7 @@ class SimpleCondorPlugin(BasePlugin):
                         condorFilePath = os.path.join(job['cache_dir'], condorFile)
                         logOutput += "\n========== %s ==========\n" % condorFile
                         if os.path.isfile(condorFilePath):
-                            logTail = BasicAlgos.tail(condorFilePath, 50)
+                            logTail = FileTools.tail(condorFilePath, 50)
                             logOutput += 'Adding end of %s to error message:\n\n' % condorFile
                             logOutput += logTail
                             logOutput += '\n\n'
@@ -467,7 +469,7 @@ class SimpleCondorPlugin(BasePlugin):
 
     def getClusterAd(self):
         """
-        _initSubmit_
+        _getClusterAd_
 
         Return common cluster classad
 
@@ -478,8 +480,6 @@ class SimpleCondorPlugin(BasePlugin):
         ad = classad.ClassAd()
 
         # ad['universe'] = "vanilla"
-        if self.reqStr:
-            ad['Requirements'] = classad.ExprTree(self.reqStr)
         ad['ShouldTransferFiles'] = "YES"
         ad['WhenToTransferOutput'] = "ON_EXIT"
         ad['UserLogUseXML'] = True
@@ -507,10 +507,6 @@ class SimpleCondorPlugin(BasePlugin):
         # Customized classAds for this plugin
         ad['DESIRED_Archs'] = "INTEL,X86_64"
 
-        ad['x509userproxy'] = self.x509userproxy
-        ad['x509userproxysubject'] = self.x509userproxysubject
-        ad['x509userproxyfirstfqan'] = self.x509userproxyfqan
-
         ad['Rank'] = 0.0
         ad['TransferIn'] = False
 
@@ -518,12 +514,13 @@ class SimpleCondorPlugin(BasePlugin):
         ad['JobAdInformationAttrs'] = ("JobStatus,QDate,EnteredCurrentStatus,JobStartDate,DESIRED_Sites,"
                                        "ExtDESIRED_Sites,WMAgent_JobID,MachineAttrGLIDEIN_CMSSite0")
 
-        # TODO: remove when 8.5.7 is deployed
+        # TODO: remove when 8.5.7 is deployed (seems to be still needed as of 8.6.11 ...)
         paramsToAdd = htcondor.param['SUBMIT_ATTRS'].split() + htcondor.param['SUBMIT_EXPRS'].split()
         paramsToSkip = ['accounting_group', 'use_x509userproxy', 'PostJobPrio2', 'JobAdInformationAttrs']
         for param in paramsToAdd:
             if (param not in ad) and (param in htcondor.param) and (param not in paramsToSkip):
                 ad[param] = classad.ExprTree(htcondor.param[param])
+
         return ad
 
     def getProcAds(self, jobList):
@@ -531,7 +528,6 @@ class SimpleCondorPlugin(BasePlugin):
         _getProcAds_
 
         Return list of job specific classads for submission
-
         """
         classAds = []
         for job in jobList:
@@ -544,23 +540,33 @@ class SimpleCondorPlugin(BasePlugin):
 
             ad['TransferOutput'] = "Report.%i.pkl,wmagentJob.log" % job["retry_count"]
 
+            # Do not define Requirements and X509 ads for Volunteer resources
+            if self.reqStr and "T3_CH_Volunteer" not in job.get('possibleSites'):
+                ad['Requirements'] = classad.ExprTree(self.reqStr)
+
+            ad['x509userproxy'] = classad.ExprTree(self.x509Expr % self.x509userproxy)
+            ad['x509userproxysubject'] = classad.ExprTree(self.x509Expr % self.x509userproxysubject)
+            ad['x509userproxyfirstfqan'] = classad.ExprTree(self.x509Expr % self.x509userproxyfqan)
+
+
             sites = ','.join(sorted(job.get('possibleSites')))
             ad['DESIRED_Sites'] = sites
 
             sites = ','.join(sorted(job.get('potentialSites')))
             ad['ExtDESIRED_Sites'] = sites
 
-            ad['WMAgent_RequestName'] = job['requestName']
+            ad['CMS_JobRetryCount'] = job['retry_count']
+            ad['WMAgent_RequestName'] = job['request_name']
 
-            match = re.compile("^[a-zA-Z0-9_]+_([a-zA-Z0-9]+)-").match(job['requestName'])
+            match = re.compile("^[a-zA-Z0-9_]+_([a-zA-Z0-9]+)-").match(job['request_name'])
             if match:
                 ad['CMSGroups'] = match.groups()[0]
             else:
                 ad['CMSGroups'] = classad.Value.Undefined
 
             ad['WMAgent_JobID'] = job['jobid']
-            ad['WMAgent_SubTaskName'] = job['taskName']
-            ad['CMS_JobType'] = job['taskType']
+            ad['WMAgent_SubTaskName'] = job['task_name']
+            ad['CMS_JobType'] = job['task_type']
 
             # Handling for AWS, cloud and opportunistic resources
             ad['AllowOpportunistic'] = job.get('allowOpportunistic', False)
@@ -569,16 +575,20 @@ class SimpleCondorPlugin(BasePlugin):
                 ad['DESIRED_CMSDataset'] = job['inputDataset']
             else:
                 ad['DESIRED_CMSDataset'] = classad.Value.Undefined
-
             if job.get('inputDatasetLocations'):
                 sites = ','.join(sorted(job['inputDatasetLocations']))
                 ad['DESIRED_CMSDataLocations'] = sites
             else:
                 ad['DESIRED_CMSDataLocations'] = classad.Value.Undefined
 
+            if job.get('inputPileup'):
+                ad['DESIRED_CMSPileups'] = ','.join(sorted(job['inputPileup']))
+            else:
+                ad['DESIRED_CMSPileups'] = classad.Value.Undefined
+
             # HighIO and repack jobs
-            ad['Requestioslots'] = 1 if job['taskType'] in ["Merge", "Cleanup", "LogCollect"] else 0
-            ad['RequestRepackslots'] = 1 if job['taskType'] == 'Repack' else 0
+            ad['Requestioslots'] = 1 if job['task_type'] in ["Merge", "Cleanup", "LogCollect"] else 0
+            ad['RequestRepackslots'] = 1 if job['task_type'] == 'Repack' else 0
 
             # Performance and resource estimates (including JDL magic tweaks)
             origCores = job.get('numberOfCores', 1)
@@ -628,14 +638,16 @@ class SimpleCondorPlugin(BasePlugin):
             ad['WMCore_ResizeJob'] = bool(job.get('resizeJob', False))
 
             taskPriority = int(job.get('taskPriority', self.defaultTaskPriority))
-            priority = int(job.get('priority', 0))
+            priority = int(job.get('wf_priority', 0))
             ad['JobPrio'] = int(priority + taskPriority * self.maxTaskPriority)
             ad['PostJobPrio1'] = int(-1 * len(job.get('potentialSites', [])))
-            ad['PostJobPrio2'] = int(-1 * job['taskID'])
+            ad['PostJobPrio2'] = int(-1 * job['task_id'])
 
             # Add OS requirements for jobs
             requiredOSes = self.scramArchtoRequiredOS(job.get('scramArch'))
             ad['REQUIRED_OS'] = requiredOSes
+            cmsswVersions = ','.join(job.get('swVersion'))
+            ad['CMSSW_Versions'] = cmsswVersions
 
             ad = convertFromUnicodeToStr(ad)
             condorAd = classad.ClassAd()

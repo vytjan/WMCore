@@ -93,7 +93,7 @@ class RepackWorkloadFactory(StdBase):
 
         """
         mergeTask = parentTask.addTask("%sMerge%s" % (parentTask.name(), parentOutputModuleName))
-        self.addDashboardMonitoring(mergeTask)
+        self.addRuntimeMonitors(mergeTask)
         mergeTaskCmssw = mergeTask.makeStep("cmsRun1")
         mergeTaskCmssw.setStepType("CMSSW")
 
@@ -200,6 +200,17 @@ class RepackWorkloadFactory(StdBase):
                     "MaxEdmSize": {"type": int, "optional": False},
                     "MaxOverSize": {"type": int, "optional": False},
                     }
+        baseArgs.update(specArgs)
+        StdBase.setDefaultArgumentsProperty(baseArgs)
+        return baseArgs
+
+    @staticmethod
+    def getWorkloadAssignArgs():
+        baseArgs = StdBase.getWorkloadAssignArgs()
+        specArgs = {
+            "Override": {"default": {"eos-lfn-prefix": "root://eoscms.cern.ch//eos/cms/store/logs/prod/recent/Repack"},
+                         "type": dict},
+            }
         baseArgs.update(specArgs)
         StdBase.setDefaultArgumentsProperty(baseArgs)
         return baseArgs

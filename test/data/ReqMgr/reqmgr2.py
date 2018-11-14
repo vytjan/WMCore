@@ -15,13 +15,14 @@ Note: tests for checking data directly in CouchDB in ReqMgr1 test script:
     WMCore/test/data/ReqMgr/reqmgr.py
 """
 from __future__ import print_function
+
+import json
+import logging
 import os
 import sys
-from httplib import HTTPSConnection, HTTPConnection
 import urllib
-import logging
-from optparse import OptionParser, TitledHelpFormatter
-import json
+from argparse import ArgumentParser
+from httplib import HTTPSConnection, HTTPConnection
 
 
 class RESTClient(object):
@@ -299,20 +300,18 @@ class ReqMgrClient(RESTClient):
 # ---------------------------------------------------------------------------
 
 
-def process_cli_args(args):
+def process_cli_args():
     def err_exit(msg, parser):
         print('\n')
         parser.print_help()
         print("\n\n%s" % msg)
         sys.exit(1)
 
-    form = TitledHelpFormatter(width=78)
-    parser = OptionParser(usage="usage: %prog options", formatter=form,
-                          add_help_option=None)
+    parser = ArgumentParser( usage='%(prog)s [options]', add_help=False)
     actions = define_cli_options(parser)
     # opts - new processed options
     # args - remainder of the input array
-    opts, args = parser.parse_args(args=args)
+    opts = parser.parse_args()
     # check command line arguments validity
     if not opts.reqmgrurl:
         err_exit("Missing mandatory --reqmgrurl.", parser)
@@ -341,38 +340,38 @@ def define_cli_options(parser):
     actions = []
     # "-h" ------------------------------------------------------------------
     help = "Display this help"
-    parser.add_option("-h", "--help", help=help, action='help')
+    parser.add_argument("-h", "--help", help=help, action='help')
     # "-c" ------------------------------------------------------------------
     help = ("User cert file (or cert proxy file). "
             "If not defined, tries X509_USER_CERT then X509_USER_PROXY env. "
             "variables. And lastly /tmp/x509up_uUID.")
-    parser.add_option("-c", "--cert", help=help)
+    parser.add_argument("-c", "--cert", help=help)
     # "-k" ------------------------------------------------------------------
     help = ("User key file (or cert proxy file). "
             "If not defined, tries X509_USER_KEY then X509_USER_PROXY env. "
             "variables. And lastly /tmp/x509up_uUID.")
-    parser.add_option("-k", "--key", help=help)
+    parser.add_argument("-k", "--key", help=help)
     # -u --------------------------------------------------------------------
     help = ("Request Manager service address (if not options is supplied, "
             "returns a list of the requests in ReqMgr) "
             "e.g.: https://maxareqmgr01.cern.ch")
-    parser.add_option("-u", "--reqmgrurl", help=help)
+    parser.add_argument("-u", "--reqmgrurl", help=help)
     # -f --------------------------------------------------------------------
     help = "Request template with arguments definition, request config file."
-    parser.add_option("-f", "--config_file", help=help)
+    parser.add_argument("-f", "--config_file", help=help)
     # -j --------------------------------------------------------------------
     help = ("JSON string to override values from --config_file. "
             "e.g. --json=\'{\"createRequest\": {\"Requestor\": \"efajardo\"}, "
             "\"assignRequest\": {\"FirstLumi\": 1}}\' "
             "e.g. --json=`\"cat alan.json\"`")
-    parser.add_option("-j", "--json", help=help)
+    parser.add_argument("-j", "--json", help=help)
     # -r --------------------------------------------------------------------
     help = ("Request name or list of comma-separated names to perform "
             "actions upon.")
-    parser.add_option("-r", "--request_names", help=help)
+    parser.add_argument("-r", "--request_names", help=help)
     # -v ---------------------------------------------------------------------
     help = "Verbose console output."
-    parser.add_option("-v", "--verbose", action="store_true", help=help)
+    parser.add_argument("-v", "--verbose", action="store_true", help=help)
     # actions definition below ----------------------------------------------
     # -i --------------------------------------------------------------------
     help = ("Action: Create and approve a request. Whichever from the config "
@@ -381,7 +380,7 @@ def define_cli_options(parser):
             "Depends on --config_file.")
     action = "create_request"
     actions.append(action)
-    parser.add_option("-i", "--" + action, action="store_true", help=help)
+    parser.add_argument("-i", "--" + action, action="store_true", help=help)
     # -g --------------------------------------------------------------------
     help = ("Action: Assign request(s) specified by --request_names "
             "or a new request when used with --create_request. "
@@ -389,24 +388,24 @@ def define_cli_options(parser):
             "--create_request")
     action = "assign_request"
     actions.append(action)
-    parser.add_option("-g", "--" + action, action="store_true", help=help)
+    parser.add_argument("-g", "--" + action, action="store_true", help=help)
 
     # -d --------------------------------------------------------------------
     help = "Action: Delete request(s) specified by --request_names."
     action = "delete_requests"
     actions.append(action)
-    parser.add_option("-d", "--" + action, action="store_true", help=help)
+    parser.add_argument("-d", "--" + action, action="store_true", help=help)
     # -q --------------------------------------------------------------------
     help = "Action: Query request(s) specified by --request_names."
     action = "query_requests"
     actions.append(action)
-    parser.add_option("-q", "--" + action, action="store_true", help=help)
+    parser.add_argument("-q", "--" + action, action="store_true", help=help)
     # -a --------------------------------------------------------------------
     help = ("Action: Perform all operations this script allows. "
             "Check all REST API of the ReqMgr service.")
     action = "all_tests"
     actions.append(action)
-    parser.add_option("-a", "--" + action, action="store_true", help=help)
+    parser.add_argument("-a", "--" + action, action="store_true", help=help)
 
     return actions
 
@@ -446,9 +445,9 @@ def process_request_args(intput_config_file, command_line_json):
     return request_args
 
 
-def initialization(cli_args):
-    print("Processing command line arguments: '%s' ..." % cli_args)
-    config, actions = process_cli_args(cli_args)
+def initialization():
+    print("Processing command line arguments: '%s' ..." % sys.argv)
+    config, actions = process_cli_args()
     logging.basicConfig(level=logging.DEBUG if config.verbose else logging.INFO)
     logging.debug("Set verbose console output.")
     reqmgr_client = ReqMgrClient(config.reqmgrurl, config)
@@ -459,7 +458,7 @@ def initialization(cli_args):
 
 
 def main():
-    reqmgr_client, config, defined_actions = initialization(sys.argv)
+    reqmgr_client, config, defined_actions = initialization()
     # definedAction are all actions as defined for CLI
     # there is now gonna be usually 1 action to perform, but could be more
     # filter out those where config.ACTION is None

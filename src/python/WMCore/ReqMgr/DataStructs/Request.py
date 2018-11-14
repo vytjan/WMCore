@@ -22,6 +22,7 @@ import time
 
 import cherrypy
 
+from WMCore.REST.Auth import get_user_info
 from WMCore.ReqMgr.DataStructs.RequestStatus import REQUEST_START_STATE, ACTIVE_STATUS_FILTER
 
 
@@ -38,8 +39,9 @@ def initialize_request_args(request, config):
     """
 
     # user information for cert. (which is converted to cherry py log in)
-    request["Requestor"] = cherrypy.request.user["login"]
-    request["RequestorDN"] = cherrypy.request.user.get("dn", "unknown")
+    user = get_user_info()
+    request["Requestor"] = user["login"]
+    request["RequestorDN"] = user.get("dn", "unknown")
     # service certificates carry @hostname, remove it if it exists
     request["Requestor"] = request["Requestor"].split('@')[0]
 
@@ -49,6 +51,9 @@ def initialize_request_args(request, config):
                                      "UpdateTime": int(time.time()), "DN": request["RequestorDN"]}]
     request["RequestDate"] = list(time.gmtime()[:6])
 
+    # set the original priority when request is create
+    request["PriorityTransition"] = [{"Priority": request["RequestPriority"],
+                                     "UpdateTime": int(time.time()), "DN": request["RequestorDN"]}]
     # update the information from config
     request["CouchURL"] = config.couch_host
     request["CouchWorkloadDBName"] = config.couch_reqmgr_db
@@ -236,6 +241,10 @@ class RequestInfo(object):
                 # TODO: need to handle dictionary comparison
                 # For now ignore
                 continue
+            elif value in ["false", "False", "FALSE"]:
+                value = False
+            elif value in ["true", "True", "TRUE"]:
+                value = True
             elif not isinstance(value, list):
                 value = [value]
 
@@ -243,6 +252,9 @@ class RequestInfo(object):
             if reqValue is not None:
                 if isinstance(reqValue, list):
                     if not set(reqValue).intersection(set(value)):
+                        return False
+                elif isinstance(reqValue, bool):
+                    if reqValue is not value:
                         return False
                 elif reqValue not in value:
                     return False

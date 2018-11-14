@@ -1,3 +1,2079 @@
+1.1.18 to 1.1.19.pre1:
+  - 1.1.18.patch1
+  - Merge pull request #8907 from amaltaro/fix-8873
+  - Merge pull request #8908 from ddavila0/fix2-8890
+  - Adding support to use certificates on StompAMQ
+  - change rev to revision for initial revision
+  - Merge pull request #8906 from khurtado/patch-1
+  - Fix analytics data collector Clear database when tearing down. Remove unused imports.
+  - Merge pull request #8902 from amaltaro/fix-8901
+  - Merge pull request #8900 from amaltaro/fix-8882
+  - Unit tests and pylint fixes
+  - Only run draining algorithm if we have a valid agent config
+  - Handle HTTP in the pycurl response header
+  - Merge pull request #8881 from amaltaro/py3-sorted
+  - Merge pull request #8887 from amaltaro/deploy-oracle
+  - Merge pull request #8888 from ticoann/AnalyticsDataCollector_test_fix
+  - Merge pull request #8896 from amaltaro/badBlocks-templates
+  - Merge pull request #8895 from amaltaro/fix-8893
+  - ReReco templates with invalid work and/or all files invalid in a block
+  - Catch ORA-00060 deadlock to avoid crashing the component
+  - fix AnalyticsDataCollector test
+  - Fix cert and oracle check in the deployment
+  - pylint fixes
+  - Replace sort by sorted to make py3 happy
+
+1.1.18 to 1.1.18.patch1:
+  - Merge pull request #8907 from amaltaro/fix-8873
+  - Merge pull request #8908 from ddavila0/fix2-8890
+  - Adding support to use certificates on StompAMQ
+  - change rev to revision for initial revision
+  - Merge pull request #8906 from khurtado/patch-1
+  - Fix analytics data collector Clear database when tearing down. Remove unused imports.
+  - Merge pull request #8902 from amaltaro/fix-8901
+  - Merge pull request #8900 from amaltaro/fix-8882
+  - Unit tests and pylint fixes
+  - Only run draining algorithm if we have a valid agent config
+  - Handle HTTP in the pycurl response header
+  - Merge pull request #8881 from amaltaro/py3-sorted
+  - Merge pull request #8887 from amaltaro/deploy-oracle
+  - Merge pull request #8888 from ticoann/AnalyticsDataCollector_test_fix
+  - Merge pull request #8896 from amaltaro/badBlocks-templates
+  - Merge pull request #8895 from amaltaro/fix-8893
+  - ReReco templates with invalid work and/or all files invalid in a block
+  - Catch ORA-00060 deadlock to avoid crashing the component
+  - fix AnalyticsDataCollector test
+  - Fix cert and oracle check in the deployment
+  - pylint fixes
+  - Replace sort by sorted to make py3 happy
+
+1.1.17 to 1.1.18:
+  - 1.1.18.pre6
+  - Merge pull request #8891 from ticoann/improve_performance
+  - improve query speed by 30%
+  - Merge pull request #8880 from amaltaro/wmcore-requirements
+  - List of WMAgent python dependencies
+  - 1.1.18.pre5
+  - Merge pull request #8875 from amaltaro/fix-8872
+  - Merge pull request #8876 from ticoann/delayed-keyup
+  - Merge pull request #8874 from amaltaro/reqmgr2-argparse
+  - add delay for key up
+  - fix unit tests and pylint
+  - Distinguish between bad work units and work that doesnt pass constraints
+  - Fix argument parsing in util reqmgr2
+  - 1.1.18.pre4
+  - Merge pull request #8865 from amaltaro/fix-8828
+  - Merge pull request #8871 from ticoann/replace_cherrypy_user
+  - Merge pull request #8870 from amaltaro/fix-7808
+  - Delete LogDB wmstats docs when wfs are archived
+  - add correct path
+  - replace cherrypy.request.user
+  - Merge pull request #8868 from vkuznet/cherrypy-user
+  - Merge pull request #8869 from amaltaro/status-gui
+  - Merge pull request #8866 from amaltaro/more-8863
+  - pylint fixes
+  - raise exception if SiteDB is used when it should not!
+  - Grey out status not allowed to humans in ReqMgr2 Gui
+  - Add get_user_info helper function to encapsulate underlying technology
+  - Use CRIC in ReqMgr2 GUI
+  - Merge pull request #8863 from amaltaro/use-cric-reqmgr
+  - pylint and unit test updates
+  - Allow acquired to failed status transition; allow Failed GQEs to exist among others
+  - update tests
+  - Add CRIC flag for central services
+  - 1.1.18.pre3
+  - Merge pull request #8855 from ticoann/post_wmstats_summary
+  - Merge pull request #8856 from amaltaro/fix-8846
+  - post wmstats summary directly to central wmstats
+  - Merge pull request #8857 from ticoann/add_wq_filter
+  - pylint fixes for DBS3Reader
+  - add filter for Global WorkQueue db rotation
+  - Does not raise DBSReaderError when block has no valid files
+  - 1.1.18.pre2
+  - Merge pull request #8852 from amaltaro/fix-8849
+  - Correctly define int arguments for argparse
+  - 1.1.18.pre1
+  - Merge pull request #8849 from amaltaro/fix-7158
+  - Merge pull request #8850 from amaltaro/fix-8848
+  - Merge pull request #8842 from amaltaro/fix-8841
+  - Improved CRIC unit tests
+  - unit tests and pylint fixes
+  - Properly check whether Services cache is expired or not
+  - pylint fixes
+  - Migrate from optparse to argparse
+  - Merge pull request #8838 from amaltaro/fix-8792
+  - Merge pull request #8836 from ticoann/wmstats_remove_time_series
+  - Merge pull request #8848 from amaltaro/fix-8847
+  - Merge pull request #8844 from amaltaro/fix-8839
+  - Add required files for agent deployment; improved initial node setup
+  - Catch other failures in the DQMUpload step
+  - test code into the test commit
+  - Added support to a config dict for further parameters
+  - Merge pull request #8822 from amaltaro/remove-agentdrain
+  - Merge pull request #8682 from amaltaro/use-cric
+  - Merge pull request #8835 from amaltaro/log-no-locations
+  - remove the deleteing old doc
+  - keep only one job summary docs per agent and request
+  - Add files to ACDC docs even if they have no location
+  - Create flag to enable CRIC (default to false) in WMAgent
+  - Remove specific updateAgentDrainingMode method
+
+1.1.17 to 1.1.18.pre6:
+  - Merge pull request #8891 from ticoann/improve_performance
+  - improve query speed by 30%
+  - Merge pull request #8880 from amaltaro/wmcore-requirements
+  - List of WMAgent python dependencies
+  - 1.1.18.pre5
+  - Merge pull request #8875 from amaltaro/fix-8872
+  - Merge pull request #8876 from ticoann/delayed-keyup
+  - Merge pull request #8874 from amaltaro/reqmgr2-argparse
+  - add delay for key up
+  - fix unit tests and pylint
+  - Distinguish between bad work units and work that doesnt pass constraints
+  - Fix argument parsing in util reqmgr2
+  - 1.1.18.pre4
+  - Merge pull request #8865 from amaltaro/fix-8828
+  - Merge pull request #8871 from ticoann/replace_cherrypy_user
+  - Merge pull request #8870 from amaltaro/fix-7808
+  - Delete LogDB wmstats docs when wfs are archived
+  - add correct path
+  - replace cherrypy.request.user
+  - Merge pull request #8868 from vkuznet/cherrypy-user
+  - Merge pull request #8869 from amaltaro/status-gui
+  - Merge pull request #8866 from amaltaro/more-8863
+  - pylint fixes
+  - raise exception if SiteDB is used when it should not!
+  - Grey out status not allowed to humans in ReqMgr2 Gui
+  - Add get_user_info helper function to encapsulate underlying technology
+  - Use CRIC in ReqMgr2 GUI
+  - Merge pull request #8863 from amaltaro/use-cric-reqmgr
+  - pylint and unit test updates
+  - Allow acquired to failed status transition; allow Failed GQEs to exist among others
+  - update tests
+  - Add CRIC flag for central services
+  - 1.1.18.pre3
+  - Merge pull request #8855 from ticoann/post_wmstats_summary
+  - Merge pull request #8856 from amaltaro/fix-8846
+  - post wmstats summary directly to central wmstats
+  - Merge pull request #8857 from ticoann/add_wq_filter
+  - pylint fixes for DBS3Reader
+  - add filter for Global WorkQueue db rotation
+  - Does not raise DBSReaderError when block has no valid files
+  - 1.1.18.pre2
+  - Merge pull request #8852 from amaltaro/fix-8849
+  - Correctly define int arguments for argparse
+  - 1.1.18.pre1
+  - Merge pull request #8849 from amaltaro/fix-7158
+  - Merge pull request #8850 from amaltaro/fix-8848
+  - Merge pull request #8842 from amaltaro/fix-8841
+  - Improved CRIC unit tests
+  - unit tests and pylint fixes
+  - Properly check whether Services cache is expired or not
+  - pylint fixes
+  - Migrate from optparse to argparse
+  - Merge pull request #8838 from amaltaro/fix-8792
+  - Merge pull request #8836 from ticoann/wmstats_remove_time_series
+  - Merge pull request #8848 from amaltaro/fix-8847
+  - Merge pull request #8844 from amaltaro/fix-8839
+  - Add required files for agent deployment; improved initial node setup
+  - Catch other failures in the DQMUpload step
+  - test code into the test commit
+  - Added support to a config dict for further parameters
+  - Merge pull request #8822 from amaltaro/remove-agentdrain
+  - Merge pull request #8682 from amaltaro/use-cric
+  - Merge pull request #8835 from amaltaro/log-no-locations
+  - remove the deleteing old doc
+  - keep only one job summary docs per agent and request
+  - Add files to ACDC docs even if they have no location
+  - Create flag to enable CRIC (default to false) in WMAgent
+  - Remove specific updateAgentDrainingMode method
+
+1.1.17 to 1.1.18.pre5:
+  - Merge pull request #8875 from amaltaro/fix-8872
+  - Merge pull request #8876 from ticoann/delayed-keyup
+  - Merge pull request #8874 from amaltaro/reqmgr2-argparse
+  - add delay for key up
+  - fix unit tests and pylint
+  - Distinguish between bad work units and work that doesnt pass constraints
+  - Fix argument parsing in util reqmgr2
+  - 1.1.18.pre4
+  - Merge pull request #8865 from amaltaro/fix-8828
+  - Merge pull request #8871 from ticoann/replace_cherrypy_user
+  - Merge pull request #8870 from amaltaro/fix-7808
+  - Delete LogDB wmstats docs when wfs are archived
+  - add correct path
+  - replace cherrypy.request.user
+  - Merge pull request #8868 from vkuznet/cherrypy-user
+  - Merge pull request #8869 from amaltaro/status-gui
+  - Merge pull request #8866 from amaltaro/more-8863
+  - pylint fixes
+  - raise exception if SiteDB is used when it should not!
+  - Grey out status not allowed to humans in ReqMgr2 Gui
+  - Add get_user_info helper function to encapsulate underlying technology
+  - Use CRIC in ReqMgr2 GUI
+  - Merge pull request #8863 from amaltaro/use-cric-reqmgr
+  - pylint and unit test updates
+  - Allow acquired to failed status transition; allow Failed GQEs to exist among others
+  - update tests
+  - Add CRIC flag for central services
+  - 1.1.18.pre3
+  - Merge pull request #8855 from ticoann/post_wmstats_summary
+  - Merge pull request #8856 from amaltaro/fix-8846
+  - post wmstats summary directly to central wmstats
+  - Merge pull request #8857 from ticoann/add_wq_filter
+  - pylint fixes for DBS3Reader
+  - add filter for Global WorkQueue db rotation
+  - Does not raise DBSReaderError when block has no valid files
+  - 1.1.18.pre2
+  - Merge pull request #8852 from amaltaro/fix-8849
+  - Correctly define int arguments for argparse
+  - 1.1.18.pre1
+  - Merge pull request #8849 from amaltaro/fix-7158
+  - Merge pull request #8850 from amaltaro/fix-8848
+  - Merge pull request #8842 from amaltaro/fix-8841
+  - Improved CRIC unit tests
+  - unit tests and pylint fixes
+  - Properly check whether Services cache is expired or not
+  - pylint fixes
+  - Migrate from optparse to argparse
+  - Merge pull request #8838 from amaltaro/fix-8792
+  - Merge pull request #8836 from ticoann/wmstats_remove_time_series
+  - Merge pull request #8848 from amaltaro/fix-8847
+  - Merge pull request #8844 from amaltaro/fix-8839
+  - Add required files for agent deployment; improved initial node setup
+  - Catch other failures in the DQMUpload step
+  - test code into the test commit
+  - Added support to a config dict for further parameters
+  - Merge pull request #8822 from amaltaro/remove-agentdrain
+  - Merge pull request #8682 from amaltaro/use-cric
+  - Merge pull request #8835 from amaltaro/log-no-locations
+  - remove the deleteing old doc
+  - keep only one job summary docs per agent and request
+  - Add files to ACDC docs even if they have no location
+  - Create flag to enable CRIC (default to false) in WMAgent
+  - Remove specific updateAgentDrainingMode method
+
+1.1.17 to 1.1.18.pre4:
+  - Merge pull request #8865 from amaltaro/fix-8828
+  - Merge pull request #8871 from ticoann/replace_cherrypy_user
+  - Merge pull request #8870 from amaltaro/fix-7808
+  - Delete LogDB wmstats docs when wfs are archived
+  - add correct path
+  - replace cherrypy.request.user
+  - Merge pull request #8868 from vkuznet/cherrypy-user
+  - Merge pull request #8869 from amaltaro/status-gui
+  - Merge pull request #8866 from amaltaro/more-8863
+  - pylint fixes
+  - raise exception if SiteDB is used when it should not!
+  - Grey out status not allowed to humans in ReqMgr2 Gui
+  - Add get_user_info helper function to encapsulate underlying technology
+  - Use CRIC in ReqMgr2 GUI
+  - Merge pull request #8863 from amaltaro/use-cric-reqmgr
+  - pylint and unit test updates
+  - Allow acquired to failed status transition; allow Failed GQEs to exist among others
+  - update tests
+  - Add CRIC flag for central services
+  - 1.1.18.pre3
+  - Merge pull request #8855 from ticoann/post_wmstats_summary
+  - Merge pull request #8856 from amaltaro/fix-8846
+  - post wmstats summary directly to central wmstats
+  - Merge pull request #8857 from ticoann/add_wq_filter
+  - pylint fixes for DBS3Reader
+  - add filter for Global WorkQueue db rotation
+  - Does not raise DBSReaderError when block has no valid files
+  - 1.1.18.pre2
+  - Merge pull request #8852 from amaltaro/fix-8849
+  - Correctly define int arguments for argparse
+  - 1.1.18.pre1
+  - Merge pull request #8849 from amaltaro/fix-7158
+  - Merge pull request #8850 from amaltaro/fix-8848
+  - Merge pull request #8842 from amaltaro/fix-8841
+  - Improved CRIC unit tests
+  - unit tests and pylint fixes
+  - Properly check whether Services cache is expired or not
+  - pylint fixes
+  - Migrate from optparse to argparse
+  - Merge pull request #8838 from amaltaro/fix-8792
+  - Merge pull request #8836 from ticoann/wmstats_remove_time_series
+  - Merge pull request #8848 from amaltaro/fix-8847
+  - Merge pull request #8844 from amaltaro/fix-8839
+  - Add required files for agent deployment; improved initial node setup
+  - Catch other failures in the DQMUpload step
+  - test code into the test commit
+  - Added support to a config dict for further parameters
+  - Merge pull request #8822 from amaltaro/remove-agentdrain
+  - Merge pull request #8682 from amaltaro/use-cric
+  - Merge pull request #8835 from amaltaro/log-no-locations
+  - remove the deleteing old doc
+  - keep only one job summary docs per agent and request
+  - Add files to ACDC docs even if they have no location
+  - Create flag to enable CRIC (default to false) in WMAgent
+  - Remove specific updateAgentDrainingMode method
+
+1.1.17 to 1.1.18.pre3:
+  - Merge pull request #8855 from ticoann/post_wmstats_summary
+  - Merge pull request #8856 from amaltaro/fix-8846
+  - post wmstats summary directly to central wmstats
+  - Merge pull request #8857 from ticoann/add_wq_filter
+  - pylint fixes for DBS3Reader
+  - add filter for Global WorkQueue db rotation
+  - Does not raise DBSReaderError when block has no valid files
+  - 1.1.18.pre2
+  - Merge pull request #8852 from amaltaro/fix-8849
+  - Correctly define int arguments for argparse
+  - 1.1.18.pre1
+  - Merge pull request #8849 from amaltaro/fix-7158
+  - Merge pull request #8850 from amaltaro/fix-8848
+  - Merge pull request #8842 from amaltaro/fix-8841
+  - Improved CRIC unit tests
+  - unit tests and pylint fixes
+  - Properly check whether Services cache is expired or not
+  - pylint fixes
+  - Migrate from optparse to argparse
+  - Merge pull request #8838 from amaltaro/fix-8792
+  - Merge pull request #8836 from ticoann/wmstats_remove_time_series
+  - Merge pull request #8848 from amaltaro/fix-8847
+  - Merge pull request #8844 from amaltaro/fix-8839
+  - Add required files for agent deployment; improved initial node setup
+  - Catch other failures in the DQMUpload step
+  - test code into the test commit
+  - Added support to a config dict for further parameters
+  - Merge pull request #8822 from amaltaro/remove-agentdrain
+  - Merge pull request #8682 from amaltaro/use-cric
+  - Merge pull request #8835 from amaltaro/log-no-locations
+  - remove the deleteing old doc
+  - keep only one job summary docs per agent and request
+  - Add files to ACDC docs even if they have no location
+  - Create flag to enable CRIC (default to false) in WMAgent
+  - Remove specific updateAgentDrainingMode method
+
+1.1.17 to 1.1.18.pre2:
+  - Merge pull request #8852 from amaltaro/fix-8849
+  - Correctly define int arguments for argparse
+  - 1.1.18.pre1
+  - Merge pull request #8849 from amaltaro/fix-7158
+  - Merge pull request #8850 from amaltaro/fix-8848
+  - Merge pull request #8842 from amaltaro/fix-8841
+  - Improved CRIC unit tests
+  - unit tests and pylint fixes
+  - Properly check whether Services cache is expired or not
+  - pylint fixes
+  - Migrate from optparse to argparse
+  - Merge pull request #8838 from amaltaro/fix-8792
+  - Merge pull request #8836 from ticoann/wmstats_remove_time_series
+  - Merge pull request #8848 from amaltaro/fix-8847
+  - Merge pull request #8844 from amaltaro/fix-8839
+  - Add required files for agent deployment; improved initial node setup
+  - Catch other failures in the DQMUpload step
+  - test code into the test commit
+  - Added support to a config dict for further parameters
+  - Merge pull request #8822 from amaltaro/remove-agentdrain
+  - Merge pull request #8682 from amaltaro/use-cric
+  - Merge pull request #8835 from amaltaro/log-no-locations
+  - remove the deleteing old doc
+  - keep only one job summary docs per agent and request
+  - Add files to ACDC docs even if they have no location
+  - Create flag to enable CRIC (default to false) in WMAgent
+  - Remove specific updateAgentDrainingMode method
+
+1.1.17 to 1.1.18.pre1:
+  - Merge pull request #8849 from amaltaro/fix-7158
+  - Merge pull request #8850 from amaltaro/fix-8848
+  - Merge pull request #8842 from amaltaro/fix-8841
+  - Improved CRIC unit tests
+  - unit tests and pylint fixes
+  - Properly check whether Services cache is expired or not
+  - pylint fixes
+  - Migrate from optparse to argparse
+  - Merge pull request #8838 from amaltaro/fix-8792
+  - Merge pull request #8836 from ticoann/wmstats_remove_time_series
+  - Merge pull request #8848 from amaltaro/fix-8847
+  - Merge pull request #8844 from amaltaro/fix-8839
+  - Add required files for agent deployment; improved initial node setup
+  - Catch other failures in the DQMUpload step
+  - test code into the test commit
+  - Added support to a config dict for further parameters
+  - Merge pull request #8822 from amaltaro/remove-agentdrain
+  - Merge pull request #8682 from amaltaro/use-cric
+  - Merge pull request #8835 from amaltaro/log-no-locations
+  - remove the deleteing old doc
+  - keep only one job summary docs per agent and request
+  - Add files to ACDC docs even if they have no location
+  - Create flag to enable CRIC (default to false) in WMAgent
+  - Remove specific updateAgentDrainingMode method
+
+1.1.16 to 1.1.17:
+  - Merge pull request #8837 from amaltaro/validateWfs-impr1
+  - Check for ChainParentageMap; provide time spent running
+  - 1.1.17.pre3
+  - Merge pull request #8824 from lecriste/addUsername
+  - Merge pull request #8788 from hufnagel/logcollect-edmcopy-util-old-cmssw
+  - Add username parameter
+  - 1.1.17.pre2
+  - Merge pull request #8808 from amaltaro/pileup-ad
+  - Merge pull request #8811 from ticoann/jobsumitter_add_type_info
+  - Merge pull request #8769 from amaltaro/dbsuploaded-parentage
+  - Merge pull request #8807 from amaltaro/upload-config-put
+  - Merge pull request #8806 from ticoann/fix_speed_drainig_setting
+  - don't apply speed mode when user drain mode is false
+  - Merge pull request #8817 from belforte/patch-1
+  - add edmcopyutil fallback for older cmssw releases, fixes #8665
+  - Merge pull request #8816 from amaltaro/multiPU-templ
+  - Merge pull request #8818 from amaltaro/deploy-1115patch5
+  - Bump agent deployment example to 1.1.15.patch5
+  - CRAB Client does not need SiteDB Service
+  - Added multi Pileup templates, jobs fail :)
+  - Merge pull request #8814 from belforte/CRICforCRAB
+  - added unit tests
+  - Define a new job classad for the PU dataset name
+  - make crabtaskworker depend on all services, so it gets the new CRIC one
+  - pylint fixes
+  - Catch Proxy Error for wmstats query; updated error messages; others
+  - Persist the PU dataset name under a WMTask object and its workload
+  - Try creating reqmgr_aux agent doc once again
+  - Merge pull request #8781 from amaltaro/ignore-ramdisk
+  - add job type info in the log
+  - 1.1.17.pre1
+  - Merge pull request #8799 from amaltaro/fix-8783-plus
+  - Merge pull request #8795 from ticoann/remove_unused_phedex_api
+  - Changed a couple of CRIC method/API names
+  - remove unused PhEDEx call
+  - Merge pull request #8786 from amaltaro/fix-8783
+  - Merge pull request #8791 from ticoann/catch_proxy_error
+  - catch proxy server error
+  - Merge pull request #8787 from ticoann/remove_unused_config
+  - remove local logdb_url
+  - Merge pull request #8777 from ticoann/fix_script_link
+  - Merge pull request #8782 from amaltaro/cpimpl-bad
+  - Added users-wise CRIC APIs for CRAB
+  - Remove wrong reference in Plugins.FNALImpl
+  - Remove lustre from the ignoredDisks list; added /mnt/ramdisk
+  - fix wrong link in workload summary
+
+1.1.16 to 1.1.17.pre3:
+  - Merge pull request #8824 from lecriste/addUsername
+  - Merge pull request #8788 from hufnagel/logcollect-edmcopy-util-old-cmssw
+  - Add username parameter
+  - 1.1.17.pre2
+  - Merge pull request #8808 from amaltaro/pileup-ad
+  - Merge pull request #8811 from ticoann/jobsumitter_add_type_info
+  - Merge pull request #8769 from amaltaro/dbsuploaded-parentage
+  - Merge pull request #8807 from amaltaro/upload-config-put
+  - Merge pull request #8806 from ticoann/fix_speed_drainig_setting
+  - don't apply speed mode when user drain mode is false
+  - Merge pull request #8817 from belforte/patch-1
+  - add edmcopyutil fallback for older cmssw releases, fixes #8665
+  - Merge pull request #8816 from amaltaro/multiPU-templ
+  - Merge pull request #8818 from amaltaro/deploy-1115patch5
+  - Bump agent deployment example to 1.1.15.patch5
+  - CRAB Client does not need SiteDB Service
+  - Added multi Pileup templates, jobs fail :)
+  - Merge pull request #8814 from belforte/CRICforCRAB
+  - added unit tests
+  - Define a new job classad for the PU dataset name
+  - make crabtaskworker depend on all services, so it gets the new CRIC one
+  - pylint fixes
+  - Catch Proxy Error for wmstats query; updated error messages; others
+  - Persist the PU dataset name under a WMTask object and its workload
+  - Try creating reqmgr_aux agent doc once again
+  - Merge pull request #8781 from amaltaro/ignore-ramdisk
+  - add job type info in the log
+  - 1.1.17.pre1
+  - Merge pull request #8799 from amaltaro/fix-8783-plus
+  - Merge pull request #8795 from ticoann/remove_unused_phedex_api
+  - Changed a couple of CRIC method/API names
+  - remove unused PhEDEx call
+  - Merge pull request #8786 from amaltaro/fix-8783
+  - Merge pull request #8791 from ticoann/catch_proxy_error
+  - catch proxy server error
+  - Merge pull request #8787 from ticoann/remove_unused_config
+  - remove local logdb_url
+  - Merge pull request #8777 from ticoann/fix_script_link
+  - Merge pull request #8782 from amaltaro/cpimpl-bad
+  - Added users-wise CRIC APIs for CRAB
+  - Remove wrong reference in Plugins.FNALImpl
+  - Remove lustre from the ignoredDisks list; added /mnt/ramdisk
+  - fix wrong link in workload summary
+
+1.1.16 to 1.1.17.pre2:
+  - Merge pull request #8808 from amaltaro/pileup-ad
+  - Merge pull request #8811 from ticoann/jobsumitter_add_type_info
+  - Merge pull request #8769 from amaltaro/dbsuploaded-parentage
+  - Merge pull request #8807 from amaltaro/upload-config-put
+  - Merge pull request #8806 from ticoann/fix_speed_drainig_setting
+  - don't apply speed mode when user drain mode is false
+  - Merge pull request #8817 from belforte/patch-1
+  - Merge pull request #8816 from amaltaro/multiPU-templ
+  - Merge pull request #8818 from amaltaro/deploy-1115patch5
+  - Bump agent deployment example to 1.1.15.patch5
+  - CRAB Client does not need SiteDB Service
+  - Added multi Pileup templates, jobs fail :)
+  - Merge pull request #8814 from belforte/CRICforCRAB
+  - added unit tests
+  - Define a new job classad for the PU dataset name
+  - make crabtaskworker depend on all services, so it gets the new CRIC one
+  - pylint fixes
+  - Catch Proxy Error for wmstats query; updated error messages; others
+  - Persist the PU dataset name under a WMTask object and its workload
+  - Try creating reqmgr_aux agent doc once again
+  - Merge pull request #8781 from amaltaro/ignore-ramdisk
+  - add job type info in the log
+  - 1.1.17.pre1
+  - Merge pull request #8799 from amaltaro/fix-8783-plus
+  - Merge pull request #8795 from ticoann/remove_unused_phedex_api
+  - Changed a couple of CRIC method/API names
+  - remove unused PhEDEx call
+  - Merge pull request #8786 from amaltaro/fix-8783
+  - Merge pull request #8791 from ticoann/catch_proxy_error
+  - catch proxy server error
+  - Merge pull request #8787 from ticoann/remove_unused_config
+  - remove local logdb_url
+  - Merge pull request #8777 from ticoann/fix_script_link
+  - Merge pull request #8782 from amaltaro/cpimpl-bad
+  - Added users-wise CRIC APIs for CRAB
+  - Remove wrong reference in Plugins.FNALImpl
+  - Remove lustre from the ignoredDisks list; added /mnt/ramdisk
+  - fix wrong link in workload summary
+
+1.1.16 to 1.1.17.pre1:
+  - Merge pull request #8799 from amaltaro/fix-8783-plus
+  - Merge pull request #8795 from ticoann/remove_unused_phedex_api
+  - Changed a couple of CRIC method/API names
+  - remove unused PhEDEx call
+  - Merge pull request #8786 from amaltaro/fix-8783
+  - Merge pull request #8791 from ticoann/catch_proxy_error
+  - catch proxy server error
+  - Merge pull request #8787 from ticoann/remove_unused_config
+  - remove local logdb_url
+  - Merge pull request #8777 from ticoann/fix_script_link
+  - Merge pull request #8782 from amaltaro/cpimpl-bad
+  - Added users-wise CRIC APIs for CRAB
+  - Remove wrong reference in Plugins.FNALImpl
+  - fix wrong link in workload summary
+
+1.1.15 to 1.1.16:
+  - 1.1.16.pre3
+  - Merge pull request #8775 from amaltaro/rest-import
+  - Import Tools in REST.Main
+  - 1.1.16.pre2
+  - Merge pull request #8774 from ticoann/remove_old_script
+  - Merge pull request #8771 from ticoann/fix_crab3_support
+  - remove deprecated script
+  - Merge pull request #8773 from ticoann/fix_log_parentage_update
+  - fix log on reqmgr thread
+  - Merge pull request #8772 from ticoann/remove_stalled_count
+  - remove stalled request count from wmstats
+  - fix import and logging for crabserver
+  - Merge pull request #8765 from amaltaro/fix-8764
+  - Merge pull request #8768 from ticoann/fix_db_exception_handler
+  - Merge pull request #8766 from ticoann/add_logger_dbs3reader
+  - Merge pull request #8762 from amaltaro/stepchain-test-parent
+  - fix db exception handling
+  - Trap wmstats exception in DBSUploadPoller
+  - set default logger for DBS3Reader
+  - Template to test StepChain parentage
+  - 1.1.16.pre1
+  - Merge pull request #8738 from ticoann/fix_stepchain_parentage
+  - StepChain fix in reqmgr
+  - Merge pull request #8752 from ticoann/fix_log_db_warnings
+  - Merge pull request #8760 from amaltaro/fix-8748
+  - Merge pull request #8757 from amaltaro/fix-8676
+  - Complement for 8748 skipping dbsbuffer inserts
+  - Convert a few DBS3Uploader logs to debug
+  - Merge pull request #8755 from ticoann/workqueue_log
+  - Merge pull request #8737 from ticoann/clean_up_fix_parentage
+  - Make WorkQueueManagerWMBSFileFeeder slightly more verbose
+  - Merge pull request #8676 from ticoann/set_stepchain_parentage
+  - Merge pull request #8746 from amaltaro/jobcreator-unicode
+  - Merge pull request #8747 from amaltaro/fix-8744
+  - Merge pull request #8748 from ticoann/improve_performance_dbsbuffer_insert
+  - Merge pull request #8736 from ticoann/add_stepchain_parent_flag
+  - clean up out put of the script and add more instruction
+  - fix logdb warning
+  - skip umerged acdc files without parents to update dbsbuffer
+  - fix unittest
+  - set the dataset parentage for StepChain
+  - impove the perfomance of dbsfile insert
+  - add flag for stepchain parentag
+  - Merge pull request #8739 from amaltaro/deploy-1115patch1
+  - fix unit tests
+  - Create bl_status states only in JobSubmitter component
+  - pylint fixes
+  - Pass if job directory has been created already; fix encode error in error msg
+  - Merge pull request #8742 from amaltaro/fix-8741
+  - Fix for ACDCs when updating the task parentage map
+  - Bump deployment script to 1.1.15.patch1; remove ErrorHandler tweak
+
+1.1.15 to 1.1.16.pre3:
+  - Merge pull request #8775 from amaltaro/rest-import
+  - Import Tools in REST.Main
+  - 1.1.16.pre2
+  - Merge pull request #8774 from ticoann/remove_old_script
+  - Merge pull request #8771 from ticoann/fix_crab3_support
+  - remove deprecated script
+  - Merge pull request #8773 from ticoann/fix_log_parentage_update
+  - fix log on reqmgr thread
+  - Merge pull request #8772 from ticoann/remove_stalled_count
+  - remove stalled request count from wmstats
+  - fix import and logging for crabserver
+  - Merge pull request #8765 from amaltaro/fix-8764
+  - Merge pull request #8768 from ticoann/fix_db_exception_handler
+  - Merge pull request #8766 from ticoann/add_logger_dbs3reader
+  - Merge pull request #8762 from amaltaro/stepchain-test-parent
+  - fix db exception handling
+  - Trap wmstats exception in DBSUploadPoller
+  - set default logger for DBS3Reader
+  - Template to test StepChain parentage
+  - 1.1.16.pre1
+  - Merge pull request #8738 from ticoann/fix_stepchain_parentage
+  - StepChain fix in reqmgr
+  - Merge pull request #8752 from ticoann/fix_log_db_warnings
+  - Merge pull request #8760 from amaltaro/fix-8748
+  - Merge pull request #8757 from amaltaro/fix-8676
+  - Complement for 8748 skipping dbsbuffer inserts
+  - Convert a few DBS3Uploader logs to debug
+  - Merge pull request #8755 from ticoann/workqueue_log
+  - Merge pull request #8737 from ticoann/clean_up_fix_parentage
+  - Make WorkQueueManagerWMBSFileFeeder slightly more verbose
+  - Merge pull request #8676 from ticoann/set_stepchain_parentage
+  - Merge pull request #8746 from amaltaro/jobcreator-unicode
+  - Merge pull request #8747 from amaltaro/fix-8744
+  - Merge pull request #8748 from ticoann/improve_performance_dbsbuffer_insert
+  - Merge pull request #8736 from ticoann/add_stepchain_parent_flag
+  - clean up out put of the script and add more instruction
+  - fix logdb warning
+  - skip umerged acdc files without parents to update dbsbuffer
+  - fix unittest
+  - set the dataset parentage for StepChain
+  - impove the perfomance of dbsfile insert
+  - add flag for stepchain parentag
+  - Merge pull request #8739 from amaltaro/deploy-1115patch1
+  - fix unit tests
+  - Create bl_status states only in JobSubmitter component
+  - pylint fixes
+  - Pass if job directory has been created already; fix encode error in error msg
+  - Merge pull request #8742 from amaltaro/fix-8741
+  - Fix for ACDCs when updating the task parentage map
+  - Bump deployment script to 1.1.15.patch1; remove ErrorHandler tweak
+
+1.1.15 to 1.1.16.pre2:
+  - Merge pull request #8774 from ticoann/remove_old_script
+  - Merge pull request #8771 from ticoann/fix_crab3_support
+  - remove deprecated script
+  - Merge pull request #8773 from ticoann/fix_log_parentage_update
+  - fix log on reqmgr thread
+  - Merge pull request #8772 from ticoann/remove_stalled_count
+  - remove stalled request count from wmstats
+  - fix import and logging for crabserver
+  - Merge pull request #8765 from amaltaro/fix-8764
+  - Merge pull request #8768 from ticoann/fix_db_exception_handler
+  - Merge pull request #8766 from ticoann/add_logger_dbs3reader
+  - Merge pull request #8762 from amaltaro/stepchain-test-parent
+  - fix db exception handling
+  - Trap wmstats exception in DBSUploadPoller
+  - set default logger for DBS3Reader
+  - Template to test StepChain parentage
+  - 1.1.16.pre1
+  - Merge pull request #8738 from ticoann/fix_stepchain_parentage
+  - StepChain fix in reqmgr
+  - Merge pull request #8752 from ticoann/fix_log_db_warnings
+  - Merge pull request #8760 from amaltaro/fix-8748
+  - Merge pull request #8757 from amaltaro/fix-8676
+  - Complement for 8748 skipping dbsbuffer inserts
+  - Convert a few DBS3Uploader logs to debug
+  - Merge pull request #8755 from ticoann/workqueue_log
+  - Merge pull request #8737 from ticoann/clean_up_fix_parentage
+  - Make WorkQueueManagerWMBSFileFeeder slightly more verbose
+  - Merge pull request #8676 from ticoann/set_stepchain_parentage
+  - Merge pull request #8746 from amaltaro/jobcreator-unicode
+  - Merge pull request #8747 from amaltaro/fix-8744
+  - Merge pull request #8748 from ticoann/improve_performance_dbsbuffer_insert
+  - Merge pull request #8736 from ticoann/add_stepchain_parent_flag
+  - clean up out put of the script and add more instruction
+  - fix logdb warning
+  - skip umerged acdc files without parents to update dbsbuffer
+  - fix unittest
+  - set the dataset parentage for StepChain
+  - impove the perfomance of dbsfile insert
+  - add flag for stepchain parentag
+  - Merge pull request #8739 from amaltaro/deploy-1115patch1
+  - fix unit tests
+  - Create bl_status states only in JobSubmitter component
+  - pylint fixes
+  - Pass if job directory has been created already; fix encode error in error msg
+  - Merge pull request #8742 from amaltaro/fix-8741
+  - Fix for ACDCs when updating the task parentage map
+  - Bump deployment script to 1.1.15.patch1; remove ErrorHandler tweak
+
+1.1.15 to 1.1.16.pre1:
+  - Merge pull request #8738 from ticoann/fix_stepchain_parentage
+  - StepChain fix in reqmgr
+  - Merge pull request #8752 from ticoann/fix_log_db_warnings
+  - Merge pull request #8760 from amaltaro/fix-8748
+  - Merge pull request #8757 from amaltaro/fix-8676
+  - Complement for 8748 skipping dbsbuffer inserts
+  - Convert a few DBS3Uploader logs to debug
+  - Merge pull request #8755 from ticoann/workqueue_log
+  - Merge pull request #8737 from ticoann/clean_up_fix_parentage
+  - Make WorkQueueManagerWMBSFileFeeder slightly more verbose
+  - Merge pull request #8676 from ticoann/set_stepchain_parentage
+  - Merge pull request #8746 from amaltaro/jobcreator-unicode
+  - Merge pull request #8747 from amaltaro/fix-8744
+  - Merge pull request #8748 from ticoann/improve_performance_dbsbuffer_insert
+  - Merge pull request #8736 from ticoann/add_stepchain_parent_flag
+  - clean up out put of the script and add more instruction
+  - fix logdb warning
+  - skip umerged acdc files without parents to update dbsbuffer
+  - fix unittest
+  - set the dataset parentage for StepChain
+  - impove the perfomance of dbsfile insert
+  - add flag for stepchain parentag
+  - Merge pull request #8739 from amaltaro/deploy-1115patch1
+  - fix unit tests
+  - Create bl_status states only in JobSubmitter component
+  - pylint fixes
+  - Pass if job directory has been created already; fix encode error in error msg
+  - Merge pull request #8742 from amaltaro/fix-8741
+  - Fix for ACDCs when updating the task parentage map
+  - Bump deployment script to 1.1.15.patch1; remove ErrorHandler tweak
+
+1.1.14 to 1.1.15:
+  - Merge pull request #8734 from ticoann/change_to_input
+  - fix raw_input
+  - Merge pull request #8729 from amaltaro/submit-many
+  - Merge pull request #8726 from amaltaro/port-8443-take2
+  - Workaround for condor submitMany; remove legacy condor parameters from job ads
+  - Merge pull request #8593 from ticoann/add_missing_parent_search_api
+  - Merge pull request #8725 from amaltaro/disk-threshold
+  - Merge pull request #8703 from amaltaro/remove-ReqMgr2Only
+  - Merge pull request #8555 from goughes/speed_draining
+  - Fix unit test by using mock aux db
+  - Enable agent speed drain
+  - Use port 8443 to communicate with cmsweb services
+  - Avoid exceptions while getting agent config values when couch is down
+  - 1.1.15.pre6
+  - Merge pull request #8722 from ticoann/fix_input_filter
+  - remove status stall warning
+  - fix inputdatset filter
+  - 1.1.15.pre5
+  - Merge pull request #8712 from amaltaro/eos-logs-url
+  - Merge pull request #8715 from ticoann/eos_http_link_change
+  - Merge pull request #8710 from amaltaro/chain-map-compat
+  - make backward compatible for the url change
+  - fix unit test
+  - Update endpoint for EOS prod/recent logs
+  - Backwards compatibility for handling chain parentage map
+  - 1.1.15.pre4
+  - Merge pull request #8706 from amaltaro/task-output-map
+  - add api for searching missing parentage
+  - update tests and pylint
+  - Create task/output dataset for TaskChain workflows
+  - Merge pull request #8700 from ticoann/add_parentage_method
+  - add unit test
+  - add step chain parentage map to reqmgr db.
+  - update test files too
+  - Remove ReqMgr2Only flag
+  - Merge pull request #8699 from amaltaro/pycondorutils-py3
+  - 1.1.15.pre3
+  - Merge pull request #8697 from amaltaro/stepchain-parentage-map
+  - import division on new module to silent py3 tests
+  - added unit test and pylint fixes
+  - Create a WMWorkload property with a StepChain steps/parentage mapping
+  - 1.1.15.pre2
+  - Merge pull request #8691 from amaltaro/log-original-args
+  - pylint fixes
+  - Remove duplicate cherrypy logs in the central services
+  - Merge pull request #8693 from amaltaro/fix-8686
+  - Fix dup exception handling and print in 8686
+  - Merge pull request #8686 from amaltaro/condor-leak-planB
+  - Merge pull request #8685 from ticoann/clean_task_archiver_log
+  - Merge pull request #8690 from ticoann/remove_error_for_tier0
+  - pylint fix
+  - clean up TaskArchiver log
+  - Merge pull request #8688 from ticoann/wqlog_clean
+  - clean up log for wq
+  - don't use workqueue injection check with T0Agent
+  - Merge pull request #8689 from ticoann/add_db_exception
+  - Add one more DB exception to retry
+  - Wrapper for HTCondor job submission
+  - 1.1.15.pre1
+  - Merge pull request #8666 from amaltaro/cric-firsttest
+  - Merge pull request #8669 from ticoann/return_exit_code
+  - return exit code in Start.py
+  - Add CRIC Service module
+  - Merge pull request #8679 from ticoann/track_priority
+  - Merge pull request #8668 from ticoann/fix_by_date
+  - add priority transition record
+  - fix the view by date
+  - Merge pull request #8667 from amaltaro/issue-8648
+  - Merge pull request #8672 from ticoann/errorhander_memory_fix
+  - fix memory problem on error handler
+  - New DAO to check subscriptions with no jobgroup associated; new condition for pulling work from GQ
+  - Merge pull request #8661 from amaltaro/issue-8660
+  - Merge pull request #8635 from amaltaro/override-tier0
+  - unit test and pylint fixes
+  - Limit number of jobs to cache in JobSubmitter; also order by task_id
+  - Merge pull request #8658 from amaltaro/deploy-1114patch2
+  - Configure ErrorHandler to 50 jobs only; bump deploy example to 1.1.14.patch2
+  - Merge pull request #8615 from amaltaro/volunteer-proxy
+  - Merge pull request #8650 from amaltaro/archive-slice-jobs
+  - Merge pull request #8651 from amaltaro/bossair-memory
+  - pylint and unit test fixes
+  - Reduce the BossAir memory footprint
+  - pylint and unit test fixes
+  - Limit the number of archiveable jobs to be loaded each cycle
+  - Strip the requirement string and proxy for Volunteer jobs
+  - Merge pull request #8652 from belforte/return60317
+  - Merge pull request #8653 from amaltaro/file-write-error
+  - Added exit code 8033 - FileWriteError - to the list of exceptions
+  - pylint fixes
+  - Override T0-spec assignment parameters with a new Override value
+  - split STAGEOUT_ERRORS for code 60317. Fix #8405
+
+1.1.14 to 1.1.15.pre6:
+  - Merge pull request #8722 from ticoann/fix_input_filter
+  - remove status stall warning
+  - fix inputdatset filter
+  - 1.1.15.pre5
+  - Merge pull request #8712 from amaltaro/eos-logs-url
+  - Merge pull request #8715 from ticoann/eos_http_link_change
+  - Merge pull request #8710 from amaltaro/chain-map-compat
+  - make backward compatible for the url change
+  - fix unit test
+  - Update endpoint for EOS prod/recent logs
+  - Backwards compatibility for handling chain parentage map
+  - 1.1.15.pre4
+  - Merge pull request #8706 from amaltaro/task-output-map
+  - update tests and pylint
+  - Create task/output dataset for TaskChain workflows
+  - Merge pull request #8700 from ticoann/add_parentage_method
+  - add unit test
+  - add step chain parentage map to reqmgr db.
+  - Merge pull request #8699 from amaltaro/pycondorutils-py3
+  - 1.1.15.pre3
+  - Merge pull request #8697 from amaltaro/stepchain-parentage-map
+  - import division on new module to silent py3 tests
+  - added unit test and pylint fixes
+  - Create a WMWorkload property with a StepChain steps/parentage mapping
+  - 1.1.15.pre2
+  - Merge pull request #8691 from amaltaro/log-original-args
+  - pylint fixes
+  - Remove duplicate cherrypy logs in the central services
+  - Merge pull request #8693 from amaltaro/fix-8686
+  - Fix dup exception handling and print in 8686
+  - Merge pull request #8686 from amaltaro/condor-leak-planB
+  - Merge pull request #8685 from ticoann/clean_task_archiver_log
+  - Merge pull request #8690 from ticoann/remove_error_for_tier0
+  - pylint fix
+  - clean up TaskArchiver log
+  - Merge pull request #8688 from ticoann/wqlog_clean
+  - clean up log for wq
+  - don't use workqueue injection check with T0Agent
+  - Merge pull request #8689 from ticoann/add_db_exception
+  - Add one more DB exception to retry
+  - Wrapper for HTCondor job submission
+  - 1.1.15.pre1
+  - Merge pull request #8666 from amaltaro/cric-firsttest
+  - Merge pull request #8669 from ticoann/return_exit_code
+  - return exit code in Start.py
+  - Add CRIC Service module
+  - Merge pull request #8679 from ticoann/track_priority
+  - Merge pull request #8668 from ticoann/fix_by_date
+  - add priority transition record
+  - fix the view by date
+  - Merge pull request #8667 from amaltaro/issue-8648
+  - Merge pull request #8672 from ticoann/errorhander_memory_fix
+  - fix memory problem on error handler
+  - New DAO to check subscriptions with no jobgroup associated; new condition for pulling work from GQ
+  - Merge pull request #8661 from amaltaro/issue-8660
+  - Merge pull request #8635 from amaltaro/override-tier0
+  - unit test and pylint fixes
+  - Limit number of jobs to cache in JobSubmitter; also order by task_id
+  - Merge pull request #8658 from amaltaro/deploy-1114patch2
+  - Configure ErrorHandler to 50 jobs only; bump deploy example to 1.1.14.patch2
+  - Merge pull request #8615 from amaltaro/volunteer-proxy
+  - Merge pull request #8650 from amaltaro/archive-slice-jobs
+  - Merge pull request #8651 from amaltaro/bossair-memory
+  - pylint and unit test fixes
+  - Reduce the BossAir memory footprint
+  - pylint and unit test fixes
+  - Limit the number of archiveable jobs to be loaded each cycle
+  - Strip the requirement string and proxy for Volunteer jobs
+  - Merge pull request #8652 from belforte/return60317
+  - Merge pull request #8653 from amaltaro/file-write-error
+  - Added exit code 8033 - FileWriteError - to the list of exceptions
+  - pylint fixes
+  - Override T0-spec assignment parameters with a new Override value
+  - split STAGEOUT_ERRORS for code 60317. Fix #8405
+
+1.1.14 to 1.1.15.pre5:
+  - Merge pull request #8712 from amaltaro/eos-logs-url
+  - Merge pull request #8715 from ticoann/eos_http_link_change
+  - Merge pull request #8710 from amaltaro/chain-map-compat
+  - make backward compatible for the url change
+  - fix unit test
+  - Update endpoint for EOS prod/recent logs
+  - Backwards compatibility for handling chain parentage map
+  - 1.1.15.pre4
+  - Merge pull request #8706 from amaltaro/task-output-map
+  - update tests and pylint
+  - Create task/output dataset for TaskChain workflows
+  - Merge pull request #8700 from ticoann/add_parentage_method
+  - add unit test
+  - add step chain parentage map to reqmgr db.
+  - Merge pull request #8699 from amaltaro/pycondorutils-py3
+  - 1.1.15.pre3
+  - Merge pull request #8697 from amaltaro/stepchain-parentage-map
+  - import division on new module to silent py3 tests
+  - added unit test and pylint fixes
+  - Create a WMWorkload property with a StepChain steps/parentage mapping
+  - 1.1.15.pre2
+  - Merge pull request #8691 from amaltaro/log-original-args
+  - pylint fixes
+  - Remove duplicate cherrypy logs in the central services
+  - Merge pull request #8693 from amaltaro/fix-8686
+  - Fix dup exception handling and print in 8686
+  - Merge pull request #8686 from amaltaro/condor-leak-planB
+  - Merge pull request #8685 from ticoann/clean_task_archiver_log
+  - Merge pull request #8690 from ticoann/remove_error_for_tier0
+  - pylint fix
+  - clean up TaskArchiver log
+  - Merge pull request #8688 from ticoann/wqlog_clean
+  - clean up log for wq
+  - don't use workqueue injection check with T0Agent
+  - Merge pull request #8689 from ticoann/add_db_exception
+  - Add one more DB exception to retry
+  - Wrapper for HTCondor job submission
+  - 1.1.15.pre1
+  - Merge pull request #8666 from amaltaro/cric-firsttest
+  - Merge pull request #8669 from ticoann/return_exit_code
+  - return exit code in Start.py
+  - Add CRIC Service module
+  - Merge pull request #8679 from ticoann/track_priority
+  - Merge pull request #8668 from ticoann/fix_by_date
+  - add priority transition record
+  - fix the view by date
+  - Merge pull request #8667 from amaltaro/issue-8648
+  - Merge pull request #8672 from ticoann/errorhander_memory_fix
+  - fix memory problem on error handler
+  - New DAO to check subscriptions with no jobgroup associated; new condition for pulling work from GQ
+  - Merge pull request #8661 from amaltaro/issue-8660
+  - Merge pull request #8635 from amaltaro/override-tier0
+  - unit test and pylint fixes
+  - Limit number of jobs to cache in JobSubmitter; also order by task_id
+  - Merge pull request #8658 from amaltaro/deploy-1114patch2
+  - Configure ErrorHandler to 50 jobs only; bump deploy example to 1.1.14.patch2
+  - Merge pull request #8615 from amaltaro/volunteer-proxy
+  - Merge pull request #8650 from amaltaro/archive-slice-jobs
+  - Merge pull request #8651 from amaltaro/bossair-memory
+  - pylint and unit test fixes
+  - Reduce the BossAir memory footprint
+  - pylint and unit test fixes
+  - Limit the number of archiveable jobs to be loaded each cycle
+  - Strip the requirement string and proxy for Volunteer jobs
+  - Merge pull request #8652 from belforte/return60317
+  - Merge pull request #8653 from amaltaro/file-write-error
+  - Added exit code 8033 - FileWriteError - to the list of exceptions
+  - pylint fixes
+  - Override T0-spec assignment parameters with a new Override value
+  - split STAGEOUT_ERRORS for code 60317. Fix #8405
+
+1.1.14 to 1.1.15.pre4:
+  - Merge pull request #8706 from amaltaro/task-output-map
+  - update tests and pylint
+  - Create task/output dataset for TaskChain workflows
+  - Merge pull request #8700 from ticoann/add_parentage_method
+  - add unit test
+  - add step chain parentage map to reqmgr db.
+  - Merge pull request #8699 from amaltaro/pycondorutils-py3
+  - 1.1.15.pre3
+  - Merge pull request #8697 from amaltaro/stepchain-parentage-map
+  - import division on new module to silent py3 tests
+  - added unit test and pylint fixes
+  - Create a WMWorkload property with a StepChain steps/parentage mapping
+  - 1.1.15.pre2
+  - Merge pull request #8691 from amaltaro/log-original-args
+  - pylint fixes
+  - Remove duplicate cherrypy logs in the central services
+  - Merge pull request #8693 from amaltaro/fix-8686
+  - Fix dup exception handling and print in 8686
+  - Merge pull request #8686 from amaltaro/condor-leak-planB
+  - Merge pull request #8685 from ticoann/clean_task_archiver_log
+  - Merge pull request #8690 from ticoann/remove_error_for_tier0
+  - pylint fix
+  - clean up TaskArchiver log
+  - Merge pull request #8688 from ticoann/wqlog_clean
+  - clean up log for wq
+  - don't use workqueue injection check with T0Agent
+  - Merge pull request #8689 from ticoann/add_db_exception
+  - Add one more DB exception to retry
+  - Wrapper for HTCondor job submission
+  - 1.1.15.pre1
+  - Merge pull request #8666 from amaltaro/cric-firsttest
+  - Merge pull request #8669 from ticoann/return_exit_code
+  - return exit code in Start.py
+  - Add CRIC Service module
+  - Merge pull request #8679 from ticoann/track_priority
+  - Merge pull request #8668 from ticoann/fix_by_date
+  - add priority transition record
+  - fix the view by date
+  - Merge pull request #8667 from amaltaro/issue-8648
+  - Merge pull request #8672 from ticoann/errorhander_memory_fix
+  - fix memory problem on error handler
+  - New DAO to check subscriptions with no jobgroup associated; new condition for pulling work from GQ
+  - Merge pull request #8661 from amaltaro/issue-8660
+  - Merge pull request #8635 from amaltaro/override-tier0
+  - unit test and pylint fixes
+  - Limit number of jobs to cache in JobSubmitter; also order by task_id
+  - Merge pull request #8658 from amaltaro/deploy-1114patch2
+  - Configure ErrorHandler to 50 jobs only; bump deploy example to 1.1.14.patch2
+  - Merge pull request #8615 from amaltaro/volunteer-proxy
+  - Merge pull request #8650 from amaltaro/archive-slice-jobs
+  - Merge pull request #8651 from amaltaro/bossair-memory
+  - pylint and unit test fixes
+  - Reduce the BossAir memory footprint
+  - pylint and unit test fixes
+  - Limit the number of archiveable jobs to be loaded each cycle
+  - Strip the requirement string and proxy for Volunteer jobs
+  - Merge pull request #8652 from belforte/return60317
+  - Merge pull request #8653 from amaltaro/file-write-error
+  - Added exit code 8033 - FileWriteError - to the list of exceptions
+  - pylint fixes
+  - Override T0-spec assignment parameters with a new Override value
+  - split STAGEOUT_ERRORS for code 60317. Fix #8405
+
+1.1.14 to 1.1.15.pre3:
+  - Merge pull request #8697 from amaltaro/stepchain-parentage-map
+  - added unit test and pylint fixes
+  - Create a WMWorkload property with a StepChain steps/parentage mapping
+  - 1.1.15.pre2
+  - Merge pull request #8691 from amaltaro/log-original-args
+  - pylint fixes
+  - Remove duplicate cherrypy logs in the central services
+  - Merge pull request #8693 from amaltaro/fix-8686
+  - Fix dup exception handling and print in 8686
+  - Merge pull request #8686 from amaltaro/condor-leak-planB
+  - Merge pull request #8685 from ticoann/clean_task_archiver_log
+  - Merge pull request #8690 from ticoann/remove_error_for_tier0
+  - pylint fix
+  - clean up TaskArchiver log
+  - Merge pull request #8688 from ticoann/wqlog_clean
+  - clean up log for wq
+  - don't use workqueue injection check with T0Agent
+  - Merge pull request #8689 from ticoann/add_db_exception
+  - Add one more DB exception to retry
+  - Wrapper for HTCondor job submission
+  - 1.1.15.pre1
+  - Merge pull request #8666 from amaltaro/cric-firsttest
+  - Merge pull request #8669 from ticoann/return_exit_code
+  - return exit code in Start.py
+  - Add CRIC Service module
+  - Merge pull request #8679 from ticoann/track_priority
+  - Merge pull request #8668 from ticoann/fix_by_date
+  - add priority transition record
+  - fix the view by date
+  - Merge pull request #8667 from amaltaro/issue-8648
+  - Merge pull request #8672 from ticoann/errorhander_memory_fix
+  - fix memory problem on error handler
+  - New DAO to check subscriptions with no jobgroup associated; new condition for pulling work from GQ
+  - Merge pull request #8661 from amaltaro/issue-8660
+  - Merge pull request #8635 from amaltaro/override-tier0
+  - unit test and pylint fixes
+  - Limit number of jobs to cache in JobSubmitter; also order by task_id
+  - Merge pull request #8658 from amaltaro/deploy-1114patch2
+  - Configure ErrorHandler to 50 jobs only; bump deploy example to 1.1.14.patch2
+  - Merge pull request #8615 from amaltaro/volunteer-proxy
+  - Merge pull request #8650 from amaltaro/archive-slice-jobs
+  - Merge pull request #8651 from amaltaro/bossair-memory
+  - pylint and unit test fixes
+  - Reduce the BossAir memory footprint
+  - pylint and unit test fixes
+  - Limit the number of archiveable jobs to be loaded each cycle
+  - Strip the requirement string and proxy for Volunteer jobs
+  - Merge pull request #8652 from belforte/return60317
+  - Merge pull request #8653 from amaltaro/file-write-error
+  - Added exit code 8033 - FileWriteError - to the list of exceptions
+  - pylint fixes
+  - Override T0-spec assignment parameters with a new Override value
+  - split STAGEOUT_ERRORS for code 60317. Fix #8405
+
+1.1.14 to 1.1.15.pre2:
+  - Merge pull request #8691 from amaltaro/log-original-args
+  - pylint fixes
+  - Remove duplicate cherrypy logs in the central services
+  - Merge pull request #8693 from amaltaro/fix-8686
+  - Fix dup exception handling and print in 8686
+  - Merge pull request #8686 from amaltaro/condor-leak-planB
+  - Merge pull request #8685 from ticoann/clean_task_archiver_log
+  - Merge pull request #8690 from ticoann/remove_error_for_tier0
+  - pylint fix
+  - clean up TaskArchiver log
+  - Merge pull request #8688 from ticoann/wqlog_clean
+  - clean up log for wq
+  - don't use workqueue injection check with T0Agent
+  - Merge pull request #8689 from ticoann/add_db_exception
+  - Add one more DB exception to retry
+  - Wrapper for HTCondor job submission
+  - 1.1.15.pre1
+  - Merge pull request #8666 from amaltaro/cric-firsttest
+  - Merge pull request #8669 from ticoann/return_exit_code
+  - return exit code in Start.py
+  - Add CRIC Service module
+  - Merge pull request #8679 from ticoann/track_priority
+  - Merge pull request #8668 from ticoann/fix_by_date
+  - add priority transition record
+  - fix the view by date
+  - Merge pull request #8667 from amaltaro/issue-8648
+  - Merge pull request #8672 from ticoann/errorhander_memory_fix
+  - fix memory problem on error handler
+  - New DAO to check subscriptions with no jobgroup associated; new condition for pulling work from GQ
+  - Merge pull request #8661 from amaltaro/issue-8660
+  - Merge pull request #8635 from amaltaro/override-tier0
+  - unit test and pylint fixes
+  - Limit number of jobs to cache in JobSubmitter; also order by task_id
+  - Merge pull request #8658 from amaltaro/deploy-1114patch2
+  - Configure ErrorHandler to 50 jobs only; bump deploy example to 1.1.14.patch2
+  - Merge pull request #8615 from amaltaro/volunteer-proxy
+  - Merge pull request #8650 from amaltaro/archive-slice-jobs
+  - Merge pull request #8651 from amaltaro/bossair-memory
+  - pylint and unit test fixes
+  - Reduce the BossAir memory footprint
+  - pylint and unit test fixes
+  - Limit the number of archiveable jobs to be loaded each cycle
+  - Strip the requirement string and proxy for Volunteer jobs
+  - Merge pull request #8652 from belforte/return60317
+  - Merge pull request #8653 from amaltaro/file-write-error
+  - Added exit code 8033 - FileWriteError - to the list of exceptions
+  - pylint fixes
+  - Override T0-spec assignment parameters with a new Override value
+  - split STAGEOUT_ERRORS for code 60317. Fix #8405
+
+1.1.14 to 1.1.15.pre1:
+  - Merge pull request #8666 from amaltaro/cric-firsttest
+  - Merge pull request #8669 from ticoann/return_exit_code
+  - return exit code in Start.py
+  - Add CRIC Service module
+  - Merge pull request #8679 from ticoann/track_priority
+  - Merge pull request #8668 from ticoann/fix_by_date
+  - add priority transition record
+  - fix the view by date
+  - Merge pull request #8667 from amaltaro/issue-8648
+  - Merge pull request #8672 from ticoann/errorhander_memory_fix
+  - fix memory problem on error handler
+  - New DAO to check subscriptions with no jobgroup associated; new condition for pulling work from GQ
+  - Merge pull request #8661 from amaltaro/issue-8660
+  - Merge pull request #8635 from amaltaro/override-tier0
+  - unit test and pylint fixes
+  - Limit number of jobs to cache in JobSubmitter; also order by task_id
+  - Merge pull request #8658 from amaltaro/deploy-1114patch2
+  - Configure ErrorHandler to 50 jobs only; bump deploy example to 1.1.14.patch2
+  - Merge pull request #8615 from amaltaro/volunteer-proxy
+  - Merge pull request #8650 from amaltaro/archive-slice-jobs
+  - Merge pull request #8651 from amaltaro/bossair-memory
+  - pylint and unit test fixes
+  - Reduce the BossAir memory footprint
+  - pylint and unit test fixes
+  - Limit the number of archiveable jobs to be loaded each cycle
+  - Strip the requirement string and proxy for Volunteer jobs
+  - Merge pull request #8652 from belforte/return60317
+  - Merge pull request #8653 from amaltaro/file-write-error
+  - Added exit code 8033 - FileWriteError - to the list of exceptions
+  - pylint fixes
+  - Override T0-spec assignment parameters with a new Override value
+  - split STAGEOUT_ERRORS for code 60317. Fix #8405
+
+1.1.13 to 1.1.14:
+  - Merge pull request #8588 from amaltaro/templates-EpJ-take3
+  - Set recent log location to TESTBED
+  - Further tweaks to templates related to eos-lfn-prefix and EventsPerJob
+  - Merge pull request #8631 from amaltaro/delete-blocks
+  - Merge pull request #8641 from amaltaro/submit-finish
+  - Merge pull request #8638 from amaltaro/check-dset-script
+  - Dump the WN environment before defining the finish function
+  - 1.1.14.pre4
+  - Merge pull request #8640 from amaltaro/EpL-change
+  - fix unit tests
+  - Decrease EventsPerLumi if its way beyond 8h jobs
+  - Script to check dbs/phedex inconsistency - fix for when block is unavailable
+  - 1.1.14.pre3
+  - Merge pull request #8621 from amaltaro/retry-classad
+  - Merge pull request #8599 from amaltaro/override-all-logArchs
+  - Make phedex block deletion level instead of datasets
+  - Merge pull request #8627 from ticoann/proc_stat
+  - Add retry count to the job classad
+  - send minimal info for process data
+  - Merge pull request #8625 from amaltaro/phedex-delete-master
+  - fix pylint and unit tests
+  - Fix phedex delete call
+  - 1.1.14.pre2
+  - Merge pull request #8620 from ticoann/add_status_reqmgr2
+  - Merge pull request #8617 from amaltaro/util-scripts
+  - add process report for prometheus
+  - Merge pull request #8604 from ticoann/error_handler_acdc_fix
+  - Merge pull request #8607 from ticoann/cleanup_jobcreator
+  - 1.1.14.pre1
+  - Merge pull request #8611 from ticoann/add_getlumi_flag
+  - Script to check dataset inconsistencies in DBS x PhEDEx
+  - Merge pull request #8612 from ticoann/remove_false_error
+  - change to debug level which is not actually error
+  - add getLumis flag
+  - Added RequestStateTransition.png
+  - Update RequestStateTransition.xml
+  - remove Sam service
+  - delete registration service
+  - remove JobCreatorWorker unused code
+  - Merge pull request #8606 from ticoann/doc_update
+  - update job state transition diagram
+  - Update JobStateTransition.xml
+  - Merge pull request #8605 from amaltaro/production-schematic
+  - Schematic of the production system
+  - swap the order of ACDC update before moving to exhausted
+  - Merge pull request #8601 from ticoann/job_transition_dia_update
+  - update the jobtransition diagram
+  - Add override to all tasks logArch step
+  - Merge pull request #8592 from ticoann/jobupdater_error_handle
+  - Merge pull request #8597 from ticoann/update_docs
+  - add jobstatus transition diagram
+  - ignore timeout error in job updater
+  - Merge pull request #8583 from ticoann/data_update_time_fix
+  - Merge pull request #8586 from amaltaro/redigi-pylint
+  - Merge pull request #8589 from amaltaro/eoscmshttp-url
+  - Update eoscmshttp url
+  - pylint fix
+  - fix wmstats report for data update time
+  - Some pylint fixes for ReDigi spec
+
+1.1.13 to 1.1.14.pre4:
+  - Merge pull request #8640 from amaltaro/EpL-change
+  - fix unit tests
+  - Decrease EventsPerLumi if its way beyond 8h jobs
+  - 1.1.14.pre3
+  - Merge pull request #8621 from amaltaro/retry-classad
+  - Merge pull request #8599 from amaltaro/override-all-logArchs
+  - Merge pull request #8627 from ticoann/proc_stat
+  - Add retry count to the job classad
+  - send minimal info for process data
+  - Merge pull request #8625 from amaltaro/phedex-delete-master
+  - fix pylint and unit tests
+  - Fix phedex delete call
+  - 1.1.14.pre2
+  - Merge pull request #8620 from ticoann/add_status_reqmgr2
+  - Merge pull request #8617 from amaltaro/util-scripts
+  - add process report for prometheus
+  - Merge pull request #8604 from ticoann/error_handler_acdc_fix
+  - Merge pull request #8607 from ticoann/cleanup_jobcreator
+  - 1.1.14.pre1
+  - Merge pull request #8611 from ticoann/add_getlumi_flag
+  - Script to check dataset inconsistencies in DBS x PhEDEx
+  - Merge pull request #8612 from ticoann/remove_false_error
+  - change to debug level which is not actually error
+  - add getLumis flag
+  - Added RequestStateTransition.png
+  - Update RequestStateTransition.xml
+  - remove Sam service
+  - delete registration service
+  - remove JobCreatorWorker unused code
+  - Merge pull request #8606 from ticoann/doc_update
+  - update job state transition diagram
+  - Update JobStateTransition.xml
+  - Merge pull request #8605 from amaltaro/production-schematic
+  - Schematic of the production system
+  - swap the order of ACDC update before moving to exhausted
+  - Merge pull request #8601 from ticoann/job_transition_dia_update
+  - update the jobtransition diagram
+  - Add override to all tasks logArch step
+  - Merge pull request #8592 from ticoann/jobupdater_error_handle
+  - Merge pull request #8597 from ticoann/update_docs
+  - add jobstatus transition diagram
+  - ignore timeout error in job updater
+  - Merge pull request #8583 from ticoann/data_update_time_fix
+  - Merge pull request #8586 from amaltaro/redigi-pylint
+  - Merge pull request #8589 from amaltaro/eoscmshttp-url
+  - Update eoscmshttp url
+  - pylint fix
+  - fix wmstats report for data update time
+  - Some pylint fixes for ReDigi spec
+
+1.1.13 to 1.1.14.pre3:
+  - Merge pull request #8621 from amaltaro/retry-classad
+  - Merge pull request #8599 from amaltaro/override-all-logArchs
+  - Merge pull request #8627 from ticoann/proc_stat
+  - Add retry count to the job classad
+  - send minimal info for process data
+  - Merge pull request #8625 from amaltaro/phedex-delete-master
+  - fix pylint and unit tests
+  - Fix phedex delete call
+  - 1.1.14.pre2
+  - Merge pull request #8620 from ticoann/add_status_reqmgr2
+  - Merge pull request #8617 from amaltaro/util-scripts
+  - add process report for prometheus
+  - Merge pull request #8604 from ticoann/error_handler_acdc_fix
+  - Merge pull request #8607 from ticoann/cleanup_jobcreator
+  - 1.1.14.pre1
+  - Merge pull request #8611 from ticoann/add_getlumi_flag
+  - Script to check dataset inconsistencies in DBS x PhEDEx
+  - Merge pull request #8612 from ticoann/remove_false_error
+  - change to debug level which is not actually error
+  - add getLumis flag
+  - Added RequestStateTransition.png
+  - Update RequestStateTransition.xml
+  - remove Sam service
+  - delete registration service
+  - remove JobCreatorWorker unused code
+  - Merge pull request #8606 from ticoann/doc_update
+  - update job state transition diagram
+  - Update JobStateTransition.xml
+  - Merge pull request #8605 from amaltaro/production-schematic
+  - Schematic of the production system
+  - swap the order of ACDC update before moving to exhausted
+  - Merge pull request #8601 from ticoann/job_transition_dia_update
+  - update the jobtransition diagram
+  - Add override to all tasks logArch step
+  - Merge pull request #8592 from ticoann/jobupdater_error_handle
+  - Merge pull request #8597 from ticoann/update_docs
+  - add jobstatus transition diagram
+  - ignore timeout error in job updater
+  - Merge pull request #8583 from ticoann/data_update_time_fix
+  - Merge pull request #8586 from amaltaro/redigi-pylint
+  - Merge pull request #8589 from amaltaro/eoscmshttp-url
+  - Update eoscmshttp url
+  - pylint fix
+  - fix wmstats report for data update time
+  - Some pylint fixes for ReDigi spec
+
+1.1.13 to 1.1.14.pre2:
+  - Merge pull request #8620 from ticoann/add_status_reqmgr2
+  - Merge pull request #8617 from amaltaro/util-scripts
+  - add process report for prometheus
+  - Merge pull request #8604 from ticoann/error_handler_acdc_fix
+  - Merge pull request #8607 from ticoann/cleanup_jobcreator
+  - 1.1.14.pre1
+  - Merge pull request #8611 from ticoann/add_getlumi_flag
+  - Script to check dataset inconsistencies in DBS x PhEDEx
+  - Merge pull request #8612 from ticoann/remove_false_error
+  - change to debug level which is not actually error
+  - add getLumis flag
+  - Added RequestStateTransition.png
+  - Update RequestStateTransition.xml
+  - remove Sam service
+  - delete registration service
+  - remove JobCreatorWorker unused code
+  - Merge pull request #8606 from ticoann/doc_update
+  - update job state transition diagram
+  - Update JobStateTransition.xml
+  - Merge pull request #8605 from amaltaro/production-schematic
+  - Schematic of the production system
+  - swap the order of ACDC update before moving to exhausted
+  - Merge pull request #8601 from ticoann/job_transition_dia_update
+  - update the jobtransition diagram
+  - Merge pull request #8592 from ticoann/jobupdater_error_handle
+  - Merge pull request #8597 from ticoann/update_docs
+  - add jobstatus transition diagram
+  - ignore timeout error in job updater
+  - Merge pull request #8583 from ticoann/data_update_time_fix
+  - Merge pull request #8586 from amaltaro/redigi-pylint
+  - Merge pull request #8589 from amaltaro/eoscmshttp-url
+  - Update eoscmshttp url
+  - pylint fix
+  - fix wmstats report for data update time
+  - Some pylint fixes for ReDigi spec
+
+1.1.13 to 1.1.14.pre1:
+  - Merge pull request #8611 from ticoann/add_getlumi_flag
+  - Merge pull request #8612 from ticoann/remove_false_error
+  - change to debug level which is not actually error
+  - add getLumis flag
+  - Added RequestStateTransition.png
+  - Update RequestStateTransition.xml
+  - Merge pull request #8606 from ticoann/doc_update
+  - update job state transition diagram
+  - Update JobStateTransition.xml
+  - Merge pull request #8605 from amaltaro/production-schematic
+  - Schematic of the production system
+  - Merge pull request #8601 from ticoann/job_transition_dia_update
+  - update the jobtransition diagram
+  - Merge pull request #8592 from ticoann/jobupdater_error_handle
+  - Merge pull request #8597 from ticoann/update_docs
+  - add jobstatus transition diagram
+  - ignore timeout error in job updater
+  - Merge pull request #8583 from ticoann/data_update_time_fix
+  - Merge pull request #8586 from amaltaro/redigi-pylint
+  - Merge pull request #8589 from amaltaro/eoscmshttp-url
+  - Update eoscmshttp url
+  - pylint fix
+  - fix wmstats report for data update time
+  - Some pylint fixes for ReDigi spec
+
+1.1.12 to 1.1.13:
+  - 1.1.13.pre5
+  - Merge pull request #8585 from amaltaro/override-acdc
+  - Very basic validation of dict spec args
+  - 1.1.13.pre4
+  - Merge pull request #8576 from amaltaro/job-retry-count
+  - Merge pull request #8582 from amaltaro/workload-overrides-test
+  - Unit test for workload Overrides methods
+  - Merge pull request #8581 from amaltaro/overrides-section
+  - Expand override arguments into the section
+  - Merge pull request #8563 from hufnagel/alcaharvest-lumi-info
+  - Set retry_count for jobs to be submitted
+  - 1.1.13.pre3
+  - Merge pull request #8531 from ticoann/add_override
+  - Merge pull request #8520 from amaltaro/issue-6857-take2
+  - Merge pull request #8572 from amaltaro/gq-monit-amq
+  - Post global_workqueue data to MonIT
+  - unit tests and pylint fixes
+  - Use first task attributes instead of the last one
+  - add override param to reqmgr2
+  - 1.1.13.pre2
+  - Merge pull request #8529 from amaltaro/add-mss-pnns
+  - Merge pull request #8551 from ticoann/add_worker_node_wmstats
+  - upload lumi text file from AlcaHarvest
+  - Merge pull request #8567 from amaltaro/multiplier-0
+  - update unit tests
+  - multiplier has to be >= 1
+  - Merge pull request #8547 from ticoann/dbcore_clean_up
+  - Merge pull request #8562 from amaltaro/deploy-1112patch2
+  - Remove AlertProcessor tweak from the deployment script
+  - unit tests and pylint fixes
+  - Speed up for ACDC document creation
+  - ResourceControl API to add standalone PNNs into the database
+  - Merge pull request #8552 from ticoann/remove_alert_system
+  - Merge pull request #8557 from hufnagel/repack-io-jobs-revert
+  - revert a change that turned out to not bee needed
+  - Merge pull request #8550 from amaltaro/more-error-codes
+  - remove alert components
+  - add worker node info to wmstats
+  - Define 99303 and 99304 exit codes in the WMExceptions
+  - remove recursive call
+  - Merge pull request #8546 from amaltaro/bloody-permissions
+  - make wmagent-upload-config executable, again
+  - 1.1.13.pre1
+  - Merge pull request #8526 from amaltaro/deploy-maxRetries
+  - Merge pull request #8530 from ticoann/fix_multi_reject
+  - Merge pull request #8537 from vytjan/ZeroRetriesJobPausedTier0
+  - Merge pull request #8533 from amaltaro/wmbs-performance
+  - Set MaxRetries to 0 for testbed/dev agents
+  - unit test and pylint fixes
+  - Performance improvements for getting ACDC work; slicing insert DAOs
+  - Merge pull request #8542 from amaltaro/python27-path
+  - pylint fixes
+  - Add WMCore libraries to PYTHON27PATH
+  - Merge pull request #8539 from amaltaro/cmssw-classad
+  - Merge pull request #8535 from amaltaro/boost-splitting
+  - Merge pull request #8536 from ticoann/chirp_env
+  - unit test and pylint fixes
+  - Publish CMSSW versions via htcondor class ad
+  - Configurable number of retries per job type. Tier0 specific.
+  - add unittest
+  - check the PATH for condor_chirp command
+  - pylint and unit test fixes
+  - Minor performance update to the splitting API
+  - fix multi reject in reqmgr2
+
+1.1.12 to 1.1.13.pre5:
+  - Merge pull request #8585 from amaltaro/override-acdc
+  - Very basic validation of dict spec args
+  - 1.1.13.pre4
+  - Merge pull request #8576 from amaltaro/job-retry-count
+  - Merge pull request #8582 from amaltaro/workload-overrides-test
+  - Unit test for workload Overrides methods
+  - Merge pull request #8581 from amaltaro/overrides-section
+  - Expand override arguments into the section
+  - Merge pull request #8563 from hufnagel/alcaharvest-lumi-info
+  - Set retry_count for jobs to be submitted
+  - 1.1.13.pre3
+  - Merge pull request #8531 from ticoann/add_override
+  - Merge pull request #8520 from amaltaro/issue-6857-take2
+  - Merge pull request #8572 from amaltaro/gq-monit-amq
+  - Post global_workqueue data to MonIT
+  - unit tests and pylint fixes
+  - Use first task attributes instead of the last one
+  - add override param to reqmgr2
+  - 1.1.13.pre2
+  - Merge pull request #8529 from amaltaro/add-mss-pnns
+  - Merge pull request #8551 from ticoann/add_worker_node_wmstats
+  - upload lumi text file from AlcaHarvest
+  - Merge pull request #8567 from amaltaro/multiplier-0
+  - update unit tests
+  - multiplier has to be >= 1
+  - Merge pull request #8547 from ticoann/dbcore_clean_up
+  - Merge pull request #8562 from amaltaro/deploy-1112patch2
+  - Remove AlertProcessor tweak from the deployment script
+  - unit tests and pylint fixes
+  - Speed up for ACDC document creation
+  - ResourceControl API to add standalone PNNs into the database
+  - Merge pull request #8552 from ticoann/remove_alert_system
+  - Merge pull request #8557 from hufnagel/repack-io-jobs-revert
+  - revert a change that turned out to not bee needed
+  - Merge pull request #8550 from amaltaro/more-error-codes
+  - remove alert components
+  - add worker node info to wmstats
+  - Define 99303 and 99304 exit codes in the WMExceptions
+  - remove recursive call
+  - Merge pull request #8546 from amaltaro/bloody-permissions
+  - make wmagent-upload-config executable, again
+  - 1.1.13.pre1
+  - Merge pull request #8526 from amaltaro/deploy-maxRetries
+  - Merge pull request #8530 from ticoann/fix_multi_reject
+  - Merge pull request #8537 from vytjan/ZeroRetriesJobPausedTier0
+  - Merge pull request #8533 from amaltaro/wmbs-performance
+  - Set MaxRetries to 0 for testbed/dev agents
+  - unit test and pylint fixes
+  - Performance improvements for getting ACDC work; slicing insert DAOs
+  - Merge pull request #8542 from amaltaro/python27-path
+  - pylint fixes
+  - Add WMCore libraries to PYTHON27PATH
+  - Merge pull request #8539 from amaltaro/cmssw-classad
+  - Merge pull request #8535 from amaltaro/boost-splitting
+  - Merge pull request #8536 from ticoann/chirp_env
+  - unit test and pylint fixes
+  - Publish CMSSW versions via htcondor class ad
+  - Configurable number of retries per job type. Tier0 specific.
+  - add unittest
+  - check the PATH for condor_chirp command
+  - pylint and unit test fixes
+  - Minor performance update to the splitting API
+  - fix multi reject in reqmgr2
+
+1.1.12 to 1.1.13.pre4:
+  - Merge pull request #8576 from amaltaro/job-retry-count
+  - Merge pull request #8582 from amaltaro/workload-overrides-test
+  - Unit test for workload Overrides methods
+  - Merge pull request #8581 from amaltaro/overrides-section
+  - Expand override arguments into the section
+  - Merge pull request #8563 from hufnagel/alcaharvest-lumi-info
+  - Set retry_count for jobs to be submitted
+  - 1.1.13.pre3
+  - Merge pull request #8531 from ticoann/add_override
+  - Merge pull request #8520 from amaltaro/issue-6857-take2
+  - Merge pull request #8572 from amaltaro/gq-monit-amq
+  - Post global_workqueue data to MonIT
+  - unit tests and pylint fixes
+  - Use first task attributes instead of the last one
+  - add override param to reqmgr2
+  - 1.1.13.pre2
+  - Merge pull request #8529 from amaltaro/add-mss-pnns
+  - Merge pull request #8551 from ticoann/add_worker_node_wmstats
+  - upload lumi text file from AlcaHarvest
+  - Merge pull request #8567 from amaltaro/multiplier-0
+  - update unit tests
+  - multiplier has to be >= 1
+  - Merge pull request #8547 from ticoann/dbcore_clean_up
+  - Merge pull request #8562 from amaltaro/deploy-1112patch2
+  - Remove AlertProcessor tweak from the deployment script
+  - unit tests and pylint fixes
+  - Speed up for ACDC document creation
+  - ResourceControl API to add standalone PNNs into the database
+  - Merge pull request #8552 from ticoann/remove_alert_system
+  - Merge pull request #8557 from hufnagel/repack-io-jobs-revert
+  - revert a change that turned out to not bee needed
+  - Merge pull request #8550 from amaltaro/more-error-codes
+  - remove alert components
+  - add worker node info to wmstats
+  - Define 99303 and 99304 exit codes in the WMExceptions
+  - remove recursive call
+  - Merge pull request #8546 from amaltaro/bloody-permissions
+  - make wmagent-upload-config executable, again
+  - 1.1.13.pre1
+  - Merge pull request #8526 from amaltaro/deploy-maxRetries
+  - Merge pull request #8530 from ticoann/fix_multi_reject
+  - Merge pull request #8537 from vytjan/ZeroRetriesJobPausedTier0
+  - Merge pull request #8533 from amaltaro/wmbs-performance
+  - Set MaxRetries to 0 for testbed/dev agents
+  - unit test and pylint fixes
+  - Performance improvements for getting ACDC work; slicing insert DAOs
+  - Merge pull request #8542 from amaltaro/python27-path
+  - pylint fixes
+  - Add WMCore libraries to PYTHON27PATH
+  - Merge pull request #8539 from amaltaro/cmssw-classad
+  - Merge pull request #8535 from amaltaro/boost-splitting
+  - Merge pull request #8536 from ticoann/chirp_env
+  - unit test and pylint fixes
+  - Publish CMSSW versions via htcondor class ad
+  - Configurable number of retries per job type. Tier0 specific.
+  - add unittest
+  - check the PATH for condor_chirp command
+  - pylint and unit test fixes
+  - Minor performance update to the splitting API
+  - fix multi reject in reqmgr2
+
+1.1.12 to 1.1.13.pre3:
+  - Merge pull request #8531 from ticoann/add_override
+  - Merge pull request #8520 from amaltaro/issue-6857-take2
+  - Merge pull request #8572 from amaltaro/gq-monit-amq
+  - Post global_workqueue data to MonIT
+  - unit tests and pylint fixes
+  - Use first task attributes instead of the last one
+  - add override param to reqmgr2
+  - 1.1.13.pre2
+  - Merge pull request #8529 from amaltaro/add-mss-pnns
+  - Merge pull request #8551 from ticoann/add_worker_node_wmstats
+  - Merge pull request #8567 from amaltaro/multiplier-0
+  - update unit tests
+  - multiplier has to be >= 1
+  - Merge pull request #8547 from ticoann/dbcore_clean_up
+  - Merge pull request #8562 from amaltaro/deploy-1112patch2
+  - Remove AlertProcessor tweak from the deployment script
+  - unit tests and pylint fixes
+  - Speed up for ACDC document creation
+  - ResourceControl API to add standalone PNNs into the database
+  - Merge pull request #8552 from ticoann/remove_alert_system
+  - Merge pull request #8557 from hufnagel/repack-io-jobs-revert
+  - revert a change that turned out to not bee needed
+  - Merge pull request #8550 from amaltaro/more-error-codes
+  - remove alert components
+  - add worker node info to wmstats
+  - Define 99303 and 99304 exit codes in the WMExceptions
+  - remove recursive call
+  - Merge pull request #8546 from amaltaro/bloody-permissions
+  - make wmagent-upload-config executable, again
+  - 1.1.13.pre1
+  - Merge pull request #8526 from amaltaro/deploy-maxRetries
+  - Merge pull request #8530 from ticoann/fix_multi_reject
+  - Merge pull request #8537 from vytjan/ZeroRetriesJobPausedTier0
+  - Merge pull request #8533 from amaltaro/wmbs-performance
+  - Set MaxRetries to 0 for testbed/dev agents
+  - unit test and pylint fixes
+  - Performance improvements for getting ACDC work; slicing insert DAOs
+  - Merge pull request #8542 from amaltaro/python27-path
+  - pylint fixes
+  - Add WMCore libraries to PYTHON27PATH
+  - Merge pull request #8539 from amaltaro/cmssw-classad
+  - Merge pull request #8535 from amaltaro/boost-splitting
+  - Merge pull request #8536 from ticoann/chirp_env
+  - unit test and pylint fixes
+  - Publish CMSSW versions via htcondor class ad
+  - Configurable number of retries per job type. Tier0 specific.
+  - add unittest
+  - check the PATH for condor_chirp command
+  - pylint and unit test fixes
+  - Minor performance update to the splitting API
+  - fix multi reject in reqmgr2
+
+1.1.12 to 1.1.13.pre2:
+  - Merge pull request #8529 from amaltaro/add-mss-pnns
+  - Merge pull request #8551 from ticoann/add_worker_node_wmstats
+  - Merge pull request #8567 from amaltaro/multiplier-0
+  - update unit tests
+  - multiplier has to be >= 1
+  - Merge pull request #8547 from ticoann/dbcore_clean_up
+  - Merge pull request #8562 from amaltaro/deploy-1112patch2
+  - Remove AlertProcessor tweak from the deployment script
+  - unit tests and pylint fixes
+  - Speed up for ACDC document creation
+  - ResourceControl API to add standalone PNNs into the database
+  - Merge pull request #8552 from ticoann/remove_alert_system
+  - Merge pull request #8557 from hufnagel/repack-io-jobs-revert
+  - revert a change that turned out to not bee needed
+  - Merge pull request #8550 from amaltaro/more-error-codes
+  - remove alert components
+  - add worker node info to wmstats
+  - Define 99303 and 99304 exit codes in the WMExceptions
+  - remove recursive call
+  - Merge pull request #8546 from amaltaro/bloody-permissions
+  - make wmagent-upload-config executable, again
+  - 1.1.13.pre1
+  - Merge pull request #8526 from amaltaro/deploy-maxRetries
+  - Merge pull request #8530 from ticoann/fix_multi_reject
+  - Merge pull request #8537 from vytjan/ZeroRetriesJobPausedTier0
+  - Merge pull request #8533 from amaltaro/wmbs-performance
+  - Set MaxRetries to 0 for testbed/dev agents
+  - unit test and pylint fixes
+  - Performance improvements for getting ACDC work; slicing insert DAOs
+  - Merge pull request #8542 from amaltaro/python27-path
+  - pylint fixes
+  - Add WMCore libraries to PYTHON27PATH
+  - Merge pull request #8539 from amaltaro/cmssw-classad
+  - Merge pull request #8535 from amaltaro/boost-splitting
+  - Merge pull request #8536 from ticoann/chirp_env
+  - unit test and pylint fixes
+  - Publish CMSSW versions via htcondor class ad
+  - Configurable number of retries per job type. Tier0 specific.
+  - add unittest
+  - check the PATH for condor_chirp command
+  - pylint and unit test fixes
+  - Minor performance update to the splitting API
+  - fix multi reject in reqmgr2
+
+1.1.12 to 1.1.13.pre1:
+  - Merge pull request #8526 from amaltaro/deploy-maxRetries
+  - Merge pull request #8530 from ticoann/fix_multi_reject
+  - Merge pull request #8537 from vytjan/ZeroRetriesJobPausedTier0
+  - Merge pull request #8533 from amaltaro/wmbs-performance
+  - Set MaxRetries to 0 for testbed/dev agents
+  - unit test and pylint fixes
+  - Performance improvements for getting ACDC work; slicing insert DAOs
+  - Merge pull request #8542 from amaltaro/python27-path
+  - pylint fixes
+  - Add WMCore libraries to PYTHON27PATH
+  - Merge pull request #8539 from amaltaro/cmssw-classad
+  - Merge pull request #8535 from amaltaro/boost-splitting
+  - Merge pull request #8536 from ticoann/chirp_env
+  - unit test and pylint fixes
+  - Publish CMSSW versions via htcondor class ad
+  - Configurable number of retries per job type. Tier0 specific.
+  - add unittest
+  - check the PATH for condor_chirp command
+  - pylint and unit test fixes
+  - Minor performance update to the splitting API
+  - fix multi reject in reqmgr2
+
+1.1.11 to 1.1.12:
+  - Merge pull request #8534 from amaltaro/put-config-aux
+  - Avoid couch race condition when updating agent config to aux db
+  - Merge pull request #8524 from ticoann/fix_unicode
+  - Merge pull request #8519 from amaltaro/templates-EpJ
+  - 1.1.12.pre3
+  - Merge pull request #8456 from ticoann/stageout-to-eos
+  - pylint fix
+  - Merge pull request #8509 from amaltaro/jobsubmitter-minors
+  - add to transfer eos log archive
+  - Merge pull request #8521 from amaltaro/reqmgr2-monitor
+  - Fetch monitoring metrics from the ReqMgr monitoring thread
+  - pylint fixes
+  - Minor improvements to JobSubmitter; trying to reduce memory footprint
+  - fix unicode encoding failure
+  - Merge pull request #8504 from goughes/fix_schedd_query
+  - Update DMWM templates to reflect EventsPerJob changes in 8515
+  - 1.1.12.pre2
+  - Merge pull request #8515 from amaltaro/issue-6857
+  - Merge pull request #8508 from ticoann/fix_splitting_update
+  - Merge pull request #8507 from ticoann/add_request_get_update
+  - unit test and pylint fixes
+  - Adapt EventsPerJob to a multiple of EventsPerLumi - EventBased only
+  - Retry schedd/collector queries on error
+  - Merge pull request #8511 from hufnagel/repack-io-jobs
+  - add update only splitting parameters
+  - have repack jobs also request io slot
+  - Merge pull request #8484 from amaltaro/multi-psn-jobs
+  - change splitting call to update
+  - unit tests and pylint fixes
+  - Remove site from DESIREDSites if task thresholds are 0
+  - Merge pull request #8505 from amaltaro/failedJobs-test
+  - Performance tests for ACDC failedJobs method
+  - Merge pull request #8487 from bbockelm/use_uuid4
+  - Merge pull request #8207 from ericvaandering/bad_wu
+  - Merge pull request #8476 from ticoann/heartbeat_fix
+  - Merge pull request #8433 from goughes/change_maxretries
+  - 1.1.12.pre1
+  - Merge pull request #8459 from ticoann/add_logdb_report
+  - Merge pull request #8494 from amaltaro/no-runLumi-map
+  - add log db report for db exception
+  - Merge pull request #8502 from amaltaro/basicAlgos
+  - Merge pull request #8500 from ticoann/set_local_logdb
+  - pylint fix
+  - Merge pull request #8471 from ticoann/add_wn_info
+  - Merge pull request #8485 from ticoann/cleanup_wmstats_teamcode
+  - unit test and pylint fixes
+  - Move Algorithms/BasicAlgos under Utils package
+  - pylint fixes
+  - Add local logdb for tier0 test
+  - Move maxRetries config to aux db
+  - Fix WMBSHelper transactions; Warning record if there is no run/lumi map
+  - Update UUID test to reflect new algorithm.
+  - Switch from UUID1 to UUID4.
+  - clean up some wmstats deplicated codes
+  - fix silence crash
+  - add some machine matrix
+  - Explictly allow an empty list without generating an error message
+
+1.1.11 to 1.1.12.pre3:
+  - Merge pull request #8456 from ticoann/stageout-to-eos
+  - pylint fix
+  - Merge pull request #8509 from amaltaro/jobsubmitter-minors
+  - add to transfer eos log archive
+  - Merge pull request #8521 from amaltaro/reqmgr2-monitor
+  - Fetch monitoring metrics from the ReqMgr monitoring thread
+  - pylint fixes
+  - Minor improvements to JobSubmitter; trying to reduce memory footprint
+  - Merge pull request #8504 from goughes/fix_schedd_query
+  - 1.1.12.pre2
+  - Merge pull request #8515 from amaltaro/issue-6857
+  - Merge pull request #8508 from ticoann/fix_splitting_update
+  - Merge pull request #8507 from ticoann/add_request_get_update
+  - unit test and pylint fixes
+  - Adapt EventsPerJob to a multiple of EventsPerLumi - EventBased only
+  - Retry schedd/collector queries on error
+  - Merge pull request #8511 from hufnagel/repack-io-jobs
+  - add update only splitting parameters
+  - have repack jobs also request io slot
+  - Merge pull request #8484 from amaltaro/multi-psn-jobs
+  - change splitting call to update
+  - unit tests and pylint fixes
+  - Remove site from DESIREDSites if task thresholds are 0
+  - Merge pull request #8505 from amaltaro/failedJobs-test
+  - Performance tests for ACDC failedJobs method
+  - Merge pull request #8487 from bbockelm/use_uuid4
+  - Merge pull request #8207 from ericvaandering/bad_wu
+  - Merge pull request #8476 from ticoann/heartbeat_fix
+  - Merge pull request #8433 from goughes/change_maxretries
+  - 1.1.12.pre1
+  - Merge pull request #8459 from ticoann/add_logdb_report
+  - Merge pull request #8494 from amaltaro/no-runLumi-map
+  - add log db report for db exception
+  - Merge pull request #8502 from amaltaro/basicAlgos
+  - Merge pull request #8500 from ticoann/set_local_logdb
+  - pylint fix
+  - Merge pull request #8471 from ticoann/add_wn_info
+  - Merge pull request #8485 from ticoann/cleanup_wmstats_teamcode
+  - unit test and pylint fixes
+  - Move Algorithms/BasicAlgos under Utils package
+  - pylint fixes
+  - Add local logdb for tier0 test
+  - Move maxRetries config to aux db
+  - Fix WMBSHelper transactions; Warning record if there is no run/lumi map
+  - Update UUID test to reflect new algorithm.
+  - Switch from UUID1 to UUID4.
+  - clean up some wmstats deplicated codes
+  - fix silence crash
+  - add some machine matrix
+  - Explictly allow an empty list without generating an error message
+
+1.1.11 to 1.1.12.pre2:
+  - Merge pull request #8515 from amaltaro/issue-6857
+  - Merge pull request #8508 from ticoann/fix_splitting_update
+  - Merge pull request #8507 from ticoann/add_request_get_update
+  - unit test and pylint fixes
+  - Adapt EventsPerJob to a multiple of EventsPerLumi - EventBased only
+  - Merge pull request #8511 from hufnagel/repack-io-jobs
+  - add update only splitting parameters
+  - have repack jobs also request io slot
+  - Merge pull request #8484 from amaltaro/multi-psn-jobs
+  - change splitting call to update
+  - unit tests and pylint fixes
+  - Remove site from DESIREDSites if task thresholds are 0
+  - Merge pull request #8505 from amaltaro/failedJobs-test
+  - Performance tests for ACDC failedJobs method
+  - Merge pull request #8487 from bbockelm/use_uuid4
+  - Merge pull request #8207 from ericvaandering/bad_wu
+  - Merge pull request #8476 from ticoann/heartbeat_fix
+  - Merge pull request #8433 from goughes/change_maxretries
+  - 1.1.12.pre1
+  - Merge pull request #8459 from ticoann/add_logdb_report
+  - Merge pull request #8494 from amaltaro/no-runLumi-map
+  - add log db report for db exception
+  - Merge pull request #8502 from amaltaro/basicAlgos
+  - Merge pull request #8500 from ticoann/set_local_logdb
+  - pylint fix
+  - Merge pull request #8471 from ticoann/add_wn_info
+  - Merge pull request #8485 from ticoann/cleanup_wmstats_teamcode
+  - unit test and pylint fixes
+  - Move Algorithms/BasicAlgos under Utils package
+  - pylint fixes
+  - Add local logdb for tier0 test
+  - Move maxRetries config to aux db
+  - Fix WMBSHelper transactions; Warning record if there is no run/lumi map
+  - Update UUID test to reflect new algorithm.
+  - Switch from UUID1 to UUID4.
+  - clean up some wmstats deplicated codes
+  - fix silence crash
+  - add some machine matrix
+  - Explictly allow an empty list without generating an error message
+
+1.1.11 to 1.1.12.pre1:
+  - Merge pull request #8459 from ticoann/add_logdb_report
+  - Merge pull request #8494 from amaltaro/no-runLumi-map
+  - add log db report for db exception
+  - Merge pull request #8502 from amaltaro/basicAlgos
+  - Merge pull request #8500 from ticoann/set_local_logdb
+  - pylint fix
+  - Merge pull request #8471 from ticoann/add_wn_info
+  - Merge pull request #8485 from ticoann/cleanup_wmstats_teamcode
+  - unit test and pylint fixes
+  - Move Algorithms/BasicAlgos under Utils package
+  - pylint fixes
+  - Add local logdb for tier0 test
+  - Fix WMBSHelper transactions; Warning record if there is no run/lumi map
+  - clean up some wmstats deplicated codes
+  - add some machine matrix
+
+1.1.10 to 1.1.11:
+  - 1.1.11.pre3
+  - Merge pull request #8489 from amaltaro/maxrss-drop
+  - unit tests and pylint fixes
+  - Remove MaxRSS and MaxVSize from StdBase spec definition
+  - Merge pull request #8486 from ticoann/add_reqaux_mock
+  - add mock for reqaux call for ErrorHandlerPoller
+  - Merge pull request #8441 from amaltaro/storeResults-sites
+  - 1.1.11.pre2
+  - Merge pull request #8482 from amaltaro/bloody-wnInfo
+  - Handle worker node info when there was no worker node in the job lifetime
+  - Merge pull request #8452 from amaltaro/defaultDocs-reqmgrAux
+  - Merge pull request #8464 from amaltaro/teams-7355
+  - Replace DEFAULT reqmgr aux docs when requested
+  - fix pylint and unit test
+  - Remove remaining Teams code
+  - Merge pull request #8475 from amaltaro/deploy-1110patch4
+  - Bump deployment example
+  - Merge pull request #8469 from amaltaro/jobAcc-cycle
+  - Merge pull request #8470 from ticoann/add_host_name_wmarchive
+  - add worker_node name in wmarchive
+  - Bump JobAccountant polling cycle to 5min
+  - 1.1.11.pre1
+  - Merge pull request #8424 from ticoann/fix_exitcode
+  - Merge pull request #8304 from ticoann/fwjr_update_hostname
+  - fix exicode 0 when job failed for log Collector
+  - initial patch for worker node data update
+  - Merge pull request #8440 from amaltaro/primdset-validation
+  - Merge pull request #8461 from amaltaro/long-quantize
+  - Merge pull request #8463 from amaltaro/fix-8457
+  - Ignore anything but RequestPriority for no status update
+  - pylint fixes
+  - Accept long data type as input for quantize
+  - Merge pull request #8454 from ticoann/lock_timeout_retry
+  - Merge pull request #8447 from amaltaro/submit-wmaJobLog
+  - Merge pull request #8444 from amaltaro/decimal-disk
+  - add lock time out in db exception list
+  - Enforce primary dataset to start with a letter - Lexicon
+  - Merge pull request #8445 from amaltaro/addT3s-only
+  - Properly create dummy files in the job wrapper
+  - Add option to insert only T3 sites into resource control
+  - Change requestDisk rounding to base 10
+  - 1.1.10.patch1
+  - Create StoreResults with SiteWhitelist
+  - Merge pull request #8425 from amaltaro/logArchive-moreLogs
+  - Merge pull request #8418 from amaltaro/deploy-drain
+  - Merge pull request #8375 from amaltaro/templates-inclParents
+  - Merge pull request #8429 from amaltaro/quantize
+  - StepChain template with IncludeParents; fixed TaskChain one
+  - pylint fixes
+  - Add all WMRuntime logs to the job logArchive; improve logging
+  - Set agents connected to "production" team to drain mode
+  - Quantize job time and disk usage
+  - Math function to quantize data
+
+1.1.10 to 1.1.11.pre3:
+  - Merge pull request #8489 from amaltaro/maxrss-drop
+  - unit tests and pylint fixes
+  - Remove MaxRSS and MaxVSize from StdBase spec definition
+  - Merge pull request #8486 from ticoann/add_reqaux_mock
+  - add mock for reqaux call for ErrorHandlerPoller
+  - Merge pull request #8441 from amaltaro/storeResults-sites
+  - 1.1.11.pre2
+  - Merge pull request #8482 from amaltaro/bloody-wnInfo
+  - Handle worker node info when there was no worker node in the job lifetime
+  - Merge pull request #8452 from amaltaro/defaultDocs-reqmgrAux
+  - Merge pull request #8464 from amaltaro/teams-7355
+  - Replace DEFAULT reqmgr aux docs when requested
+  - fix pylint and unit test
+  - Remove remaining Teams code
+  - Merge pull request #8475 from amaltaro/deploy-1110patch4
+  - Bump deployment example
+  - Merge pull request #8469 from amaltaro/jobAcc-cycle
+  - Merge pull request #8470 from ticoann/add_host_name_wmarchive
+  - add worker_node name in wmarchive
+  - Bump JobAccountant polling cycle to 5min
+  - 1.1.11.pre1
+  - Merge pull request #8424 from ticoann/fix_exitcode
+  - Merge pull request #8304 from ticoann/fwjr_update_hostname
+  - fix exicode 0 when job failed for log Collector
+  - initial patch for worker node data update
+  - Merge pull request #8440 from amaltaro/primdset-validation
+  - Merge pull request #8461 from amaltaro/long-quantize
+  - Merge pull request #8463 from amaltaro/fix-8457
+  - Ignore anything but RequestPriority for no status update
+  - pylint fixes
+  - Accept long data type as input for quantize
+  - Merge pull request #8454 from ticoann/lock_timeout_retry
+  - Merge pull request #8447 from amaltaro/submit-wmaJobLog
+  - Merge pull request #8444 from amaltaro/decimal-disk
+  - add lock time out in db exception list
+  - Enforce primary dataset to start with a letter - Lexicon
+  - Merge pull request #8445 from amaltaro/addT3s-only
+  - Properly create dummy files in the job wrapper
+  - Add option to insert only T3 sites into resource control
+  - Change requestDisk rounding to base 10
+  - 1.1.10.patch1
+  - Create StoreResults with SiteWhitelist
+  - Merge pull request #8425 from amaltaro/logArchive-moreLogs
+  - Merge pull request #8418 from amaltaro/deploy-drain
+  - Merge pull request #8375 from amaltaro/templates-inclParents
+  - Merge pull request #8429 from amaltaro/quantize
+  - StepChain template with IncludeParents; fixed TaskChain one
+  - pylint fixes
+  - Add all WMRuntime logs to the job logArchive; improve logging
+  - Set agents connected to "production" team to drain mode
+  - Quantize job time and disk usage
+  - Math function to quantize data
+
+1.1.10 to 1.1.11.pre2:
+  - Merge pull request #8482 from amaltaro/bloody-wnInfo
+  - Handle worker node info when there was no worker node in the job lifetime
+  - Merge pull request #8452 from amaltaro/defaultDocs-reqmgrAux
+  - Merge pull request #8464 from amaltaro/teams-7355
+  - Replace DEFAULT reqmgr aux docs when requested
+  - fix pylint and unit test
+  - Remove remaining Teams code
+  - Merge pull request #8475 from amaltaro/deploy-1110patch4
+  - Bump deployment example
+  - Merge pull request #8469 from amaltaro/jobAcc-cycle
+  - Merge pull request #8470 from ticoann/add_host_name_wmarchive
+  - add worker_node name in wmarchive
+  - Bump JobAccountant polling cycle to 5min
+  - 1.1.11.pre1
+  - Merge pull request #8424 from ticoann/fix_exitcode
+  - Merge pull request #8304 from ticoann/fwjr_update_hostname
+  - fix exicode 0 when job failed for log Collector
+  - initial patch for worker node data update
+  - Merge pull request #8440 from amaltaro/primdset-validation
+  - Merge pull request #8461 from amaltaro/long-quantize
+  - Merge pull request #8463 from amaltaro/fix-8457
+  - Ignore anything but RequestPriority for no status update
+  - pylint fixes
+  - Accept long data type as input for quantize
+  - Merge pull request #8454 from ticoann/lock_timeout_retry
+  - Merge pull request #8447 from amaltaro/submit-wmaJobLog
+  - Merge pull request #8444 from amaltaro/decimal-disk
+  - add lock time out in db exception list
+  - Enforce primary dataset to start with a letter - Lexicon
+  - Merge pull request #8445 from amaltaro/addT3s-only
+  - Properly create dummy files in the job wrapper
+  - Add option to insert only T3 sites into resource control
+  - Change requestDisk rounding to base 10
+  - 1.1.10.patch1
+  - Merge pull request #8425 from amaltaro/logArchive-moreLogs
+  - Merge pull request #8418 from amaltaro/deploy-drain
+  - Merge pull request #8375 from amaltaro/templates-inclParents
+  - Merge pull request #8429 from amaltaro/quantize
+  - StepChain template with IncludeParents; fixed TaskChain one
+  - pylint fixes
+  - Add all WMRuntime logs to the job logArchive; improve logging
+  - Set agents connected to "production" team to drain mode
+  - Quantize job time and disk usage
+  - Math function to quantize data
+
+1.1.10 to 1.1.11.pre1:
+  - Merge pull request #8424 from ticoann/fix_exitcode
+  - Merge pull request #8304 from ticoann/fwjr_update_hostname
+  - fix exicode 0 when job failed for log Collector
+  - initial patch for worker node data update
+  - Merge pull request #8440 from amaltaro/primdset-validation
+  - Merge pull request #8461 from amaltaro/long-quantize
+  - Merge pull request #8463 from amaltaro/fix-8457
+  - Ignore anything but RequestPriority for no status update
+  - pylint fixes
+  - Accept long data type as input for quantize
+  - Merge pull request #8454 from ticoann/lock_timeout_retry
+  - Merge pull request #8447 from amaltaro/submit-wmaJobLog
+  - Merge pull request #8444 from amaltaro/decimal-disk
+  - add lock time out in db exception list
+  - Enforce primary dataset to start with a letter - Lexicon
+  - Merge pull request #8445 from amaltaro/addT3s-only
+  - Properly create dummy files in the job wrapper
+  - Add option to insert only T3 sites into resource control
+  - Change requestDisk rounding to base 10
+  - 1.1.10.patch1
+  - Merge pull request #8425 from amaltaro/logArchive-moreLogs
+  - Merge pull request #8418 from amaltaro/deploy-drain
+  - Merge pull request #8375 from amaltaro/templates-inclParents
+  - Merge pull request #8429 from amaltaro/quantize
+  - StepChain template with IncludeParents; fixed TaskChain one
+  - pylint fixes
+  - Add all WMRuntime logs to the job logArchive; improve logging
+  - Set agents connected to "production" team to drain mode
+  - Quantize job time and disk usage
+  - Math function to quantize data
+
 1.1.10 to 1.1.10.patch1:
   - Merge pull request #8425 from amaltaro/logArchive-moreLogs
   - Merge pull request #8418 from amaltaro/deploy-drain

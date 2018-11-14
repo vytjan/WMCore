@@ -8,10 +8,12 @@ some special handling based on run information. Nonetheless, trying to
 make it generic enough that could be used by other spec types.
 """
 __all__ = []
-
+import os
+import logging
 from math import ceil
 from WMCore import Lexicon
 from WMCore.Services.SiteDB.SiteDB import SiteDBJSON as SiteDB
+from WMCore.Services.CRIC.CRIC import CRIC
 from WMCore.WorkQueue.Policy.Start.StartPolicyInterface import StartPolicyInterface
 from WMCore.WorkQueue.WorkQueueExceptions import WorkQueueWMSpecError
 from WMCore.WorkQueue.WorkQueueUtils import makeLocationsList
@@ -26,7 +28,11 @@ class Dataset(StartPolicyInterface):
         self.args.setdefault('SliceSize', 1)
         self.lumiType = "NumberOfLumis"
         self.sites = []
-        self.siteDB = SiteDB()
+        if os.getenv("WMAGENT_USE_CRIC", False) or os.getenv("WMCORE_USE_CRIC", False):
+            self.cric = CRIC()
+        else:
+            self.cric = None
+            self.siteDB = SiteDB()
 
     def split(self):
         """Apply policy to spec"""
@@ -100,16 +106,18 @@ class Dataset(StartPolicyInterface):
                 continue
 
             blockSummary = dbs.getDBSSummaryInfo(block=blockName)
+            if int(blockSummary.get('NumberOfFiles', 0)) == 0:
+                logging.warning("Block %s being rejected for lack of valid files to process", blockName)
+                self.badWork.append(blockName)
+                continue
+
             if self.args['SliceType'] == 'NumberOfRuns':
                 blockSummary['NumberOfRuns'] = dbs.listRuns(block=blockName)
-
-            if int(blockSummary['NumberOfFiles']) == 0:
-                self.rejectedWork.append(blockName)
-                continue
 
             # check lumi restrictions
             if lumiMask:
                 if blockName not in maskedBlocks:
+                    logging.warning("Block %s doesn't pass the lumi mask constraints", blockName)
                     self.rejectedWork.append(blockName)
                     continue
 
@@ -134,6 +142,7 @@ class Dataset(StartPolicyInterface):
                     runs = runs.intersection(runWhiteList)
                 # any runs left are ones we will run on, if none ignore block
                 if not runs:
+                    logging.warning("Block %s doesn't pass the runs constraints", blockName)
                     self.rejectedWork.append(blockName)
                     continue
 
@@ -178,6 +187,9 @@ class Dataset(StartPolicyInterface):
             self.sites = makeLocationsList(siteWhitelist, siteBlacklist)
             self.data[datasetPath] = self.sites
         elif locations:
-            self.data[datasetPath] = list(set(self.siteDB.PNNstoPSNs(locations)))
+            if self.cric:
+                self.data[datasetPath] = list(set(self.cric.PNNstoPSNs(locations)))
+            else:
+                self.data[datasetPath] = list(set(self.siteDB.PNNstoPSNs(locations)))
 
         return validBlocks

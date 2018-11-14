@@ -503,6 +503,23 @@ class WMTaskHelper(TreeHelper):
             self.data.input.splitting.performance = performanceConfig
         return
 
+    def updateSplittingParameters(self, algoName, **params):
+        """
+        _updateSplittingAlgorithm_
+        :param algoName: string Algorithm name
+        :param params: splitting parameters
+        :return:
+
+        Only updates specific parameters in splitting Algorithm but doesn't remove the existing splitting parameters
+        """
+        performanceConfig = getattr(self.data.input.splitting, "performance", None)
+        setattr(self.data.input.splitting, "algorithm", algoName)
+        self.data.input.splitting.section_("performance")
+        self.setSplittingParameters(**params)
+        if performanceConfig is not None:
+            self.data.input.splitting.performance = performanceConfig
+        return
+
     def jobSplittingAlgorithm(self):
         """
         _jobSplittingAlgorithm_
@@ -532,9 +549,9 @@ class WMTaskHelper(TreeHelper):
         splittingParams["trustSitelists"] = self.getTrustSitelists().get('trustlists')
         splittingParams["trustPUSitelists"] = self.getTrustSitelists().get('trustPUlists')
 
-        if "runWhitelist" not in splittingParams.keys() and self.inputRunWhitelist() != None:
+        if "runWhitelist" not in splittingParams.keys() and self.inputRunWhitelist() is not None:
             splittingParams["runWhitelist"] = self.inputRunWhitelist()
-        if "runBlacklist" not in splittingParams.keys() and self.inputRunBlacklist() != None:
+        if "runBlacklist" not in splittingParams.keys() and self.inputRunBlacklist() is not None:
             splittingParams["runBlacklist"] = self.inputRunBlacklist()
 
         return splittingParams
@@ -815,10 +832,37 @@ class WMTaskHelper(TreeHelper):
         """
 
         if hasattr(self.data.input, 'dataset'):
-            if hasattr(self.data.input.dataset, 'name') and self.data.input.dataset.name:
-                return self.data.input.dataset.name
+            return getattr(self.data.input.dataset, 'name', None)
 
         return None
+
+    def setInputPileupDatasets(self, dsetName):
+        """
+        _setInputPileupDatasets_
+
+        Create a list of pileup datasets to be used by this task (possible
+        multiple CMSSW steps)
+        """
+        self.data.input.section_("pileup")
+        if not hasattr(self.data.input.pileup, "datasets"):
+            self.data.input.pileup.datasets = []
+
+        if isinstance(dsetName, list):
+            self.data.input.pileup.datasets.extend(dsetName)
+        elif isinstance(dsetName, basestring):
+            self.data.input.pileup.datasets.append(dsetName)
+        else:
+            raise ValueError("Pileup dataset must be either a list or basestring")
+
+    def getInputPileupDatasets(self):
+        """
+        _getInputPileupDatasets_
+
+        Get a list of the input pileup dataset name(s) for this task.
+        """
+        if hasattr(self.data.input, 'pileup'):
+            return getattr(self.data.input.pileup, 'datasets', [])
+        return []
 
     def siteWhitelist(self):
         """
@@ -1084,6 +1128,9 @@ class WMTaskHelper(TreeHelper):
                 stepReport = Report()
                 stepReport.unpersist(reportPath, taskStep)
                 finalReport.setStep(taskStep, stepReport.retrieveStep(taskStep))
+                logURL = stepReport.getLogURL()
+                if logURL:
+                    finalReport.setLogURL(logURL)
             else:
                 msg = "  failed to find it."
                 msg += "Files in the directory are:\n%s" % os.listdir(os.path.join(jobLocation, taskStep))
@@ -1098,7 +1145,7 @@ class WMTaskHelper(TreeHelper):
         finalReport.data.completed = True
         finalReport.persist(reportName)
 
-        return
+        return finalReport
 
     def taskLogBaseLFN(self):
         """
@@ -1140,7 +1187,7 @@ class WMTaskHelper(TreeHelper):
         """
         if config section for the PerformanceMonitor. If not set, it will set one
         """
-        if self.monitoring != None:
+        if self.monitoring is not None:
             return
 
         self.monitoring = self.data.section_("watchdog")
@@ -1193,8 +1240,7 @@ class WMTaskHelper(TreeHelper):
                 task.setMaxVSize(maxVSize)
         return
 
-    def setPerformanceMonitor(self, maxRSS=None, maxVSize=None,
-                              softTimeout=None, gracePeriod=None):
+    def setPerformanceMonitor(self, softTimeout=None, gracePeriod=None):
         """
         _setPerformanceMonitor_
 
@@ -1203,10 +1249,6 @@ class WMTaskHelper(TreeHelper):
         # make sure there is a PerformanceMonitor section in the task
         self._setPerformanceMonitorConfig()
 
-        if maxRSS:
-            self.setMaxRSS(maxRSS)
-        if maxVSize:
-            self.setMaxVSize(maxVSize)
         if softTimeout:
             self.monitoring.PerformanceMonitor.softTimeout = int(softTimeout)
             if gracePeriod:
@@ -1223,14 +1265,14 @@ class WMTaskHelper(TreeHelper):
          used in this task
         :return: a string with the release name or a list of releases if allSteps is True.
         """
-        versions = set()
+        versions = []
         for stepName in self.listAllStepNames():
             stepHelper = self.getStepHelper(stepName)
             if stepHelper.stepType() == "CMSSW":
                 if not allSteps:
                     return stepHelper.getCMSSWVersion()
                 else:
-                    versions.add(stepHelper.getCMSSWVersion(allSteps))
+                    versions.append(stepHelper.getCMSSWVersion())
         return versions
 
     def getScramArch(self, allSteps=False):
@@ -1240,14 +1282,14 @@ class WMTaskHelper(TreeHelper):
         Get the scram architecture for the first CMSSW step of workload.
         Set allSteps to true to retrieve all the scramArchs used in this task.
         """
-        scrams = set()
+        scrams = []
         for stepName in self.listAllStepNames():
             stepHelper = self.getStepHelper(stepName)
             if stepHelper.stepType() == "CMSSW":
                 if not allSteps:
                     return stepHelper.getScramArch()
                 else:
-                    scrams.add(stepHelper.getScramArch(allSteps))
+                    scrams.append(stepHelper.getScramArch())
         return scrams
 
     def setPrimarySubType(self, subType):
@@ -1512,9 +1554,7 @@ class WMTaskHelper(TreeHelper):
         """
         propMap = {"ProcessingVersion": self.setProcessingVersion,
                    "AcquisitionEra": self.setAcquisitionEra,
-                   "ProcessingString": self.setProcessingString,
-                   "MaxRSS": self.setMaxRSS,
-                   "MaxVSize": self.setMaxVSize
+                   "ProcessingString": self.setProcessingString
                    }
         return propMap
 
@@ -1666,7 +1706,7 @@ class WMTaskHelper(TreeHelper):
                                                     getattr(outputModule, "dataTier"),
                                                     processingString)
 
-                    if runNumber != None and runNumber > 0:
+                    if runNumber is not None and runNumber > 0:
                         runString = str(runNumber).zfill(9)
                         lfnSuffix = "/%s/%s/%s" % (runString[0:3],
                                                    runString[3:6],

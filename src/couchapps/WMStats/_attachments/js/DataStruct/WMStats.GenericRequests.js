@@ -295,6 +295,9 @@ WMStats.GenericRequests.prototype = {
         if (property == 'request_status') {
             return workflowData[property][workflowData[property].length - 1].status;
         }
+        if (property == 'inputdataset') {
+            return WMStats.Utils.getInputDatasets(workflowData);
+        }
         return workflowData[property];
     },
     
@@ -449,7 +452,7 @@ WMStats.GenericRequests.prototype = {
                                  *    "CouchDBName": "reqmgr_config_cache", "CMSSWVersion": "CMSSW_5_3_19", "NonCustodialSites": [], 
                                  *    "RequestSizeFiles": 0, "CouchWorkloadDBName": "reqmgr_workload_cache", "RequestPriority": 90000, 
                                  *    "SiteWhitelist": ["T1_US_FNAL", "T2_CH_CERN"], 
-                                 *    "SubscriptionPriority": "Low", "ProcessingVersion": "1", "Teams": ["testbed-dev"], 
+                                 *    "SubscriptionPriority": "Low", "ProcessingVersion": "1", "Team": "testbed-dev",
                                  *    "SplittingAlgo": "LumiBased", "TotalEstimatedJobs": 100, 
                                  *    "RequestTransition": [{"Status": "new", "DN": null, "UpdateTime": 1437149248}, 
                                  *                          {"Status": "assignment-approved", "DN": null, "UpdateTime": 1437149248}, 

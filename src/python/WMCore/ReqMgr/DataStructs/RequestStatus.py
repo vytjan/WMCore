@@ -18,7 +18,8 @@ REQUEST_STATE_TRANSITION = {
                  "failed"],
 
     "acquired": ["running-open",
-                 "aborted"],
+                 "aborted",
+                 "failed"],
 
     "running-open": ["running-closed",
                      "force-complete",  # manual transition
@@ -54,6 +55,16 @@ REQUEST_STATE_TRANSITION = {
     "rejected-archived": []
 }
 
+# List of requests that a human user can change a request to
+REQUEST_HUMAN_STATES = ["assignment-approved",
+                        "assigned",
+                        "force-complete",
+                        "closed-out",
+                        "announced",
+                        "rejected",
+                        "aborted"]
+
+
 ACTIVE_STATUS = ["new",
                  "assignment-approved",
                  "assigned",
@@ -75,14 +86,13 @@ ALLOWED_ACTIONS_FOR_STATUS = {
     "new": ["RequestPriority"],
     "assignment-approved": ["RequestPriority", "Team", "SiteWhitelist", "SiteBlacklist",
                             "AcquisitionEra", "ProcessingString", "ProcessingVersion",
-                            "Dashboard", "MergedLFNBase", "MaxRSS", "TrustSitelists",
+                            "Dashboard", "MergedLFNBase", "TrustSitelists",
                             "UnmergedLFNBase", "MinMergeSize", "MaxMergeSize",
-                            "MaxMergeEvents", "MaxVSize",
-                            "BlockCloseMaxWaitTime",
+                            "MaxMergeEvents", "BlockCloseMaxWaitTime",
                             "BlockCloseMaxFiles", "BlockCloseMaxEvents", "BlockCloseMaxSize",
                             "SoftTimeout", "GracePeriod",
                             "TrustPUSitelists", "CustodialSites", "CustodialSubType",
-                            "NonCustodialSites", "NonCustodialSubType",
+                            "NonCustodialSites", "NonCustodialSubType", "Override",
                             "AutoApproveSubscriptionSites", "SubscriptionPriority"],
     "assigned": ["RequestPriority"],
     "acquired": ["RequestPriority"],

@@ -1,8 +1,13 @@
-import WMCore
+import logging
+import random
 import time
 from json import JSONEncoder
+
+import WMCore
+from Utils.IteratorTools import grouper
 from WMCore.Database.CMSCouch import CouchNotFoundError
 from WMCore.Services.WMStats.WMStatsReader import WMStatsReader
+
 
 def monitorDocFromRequestSchema(schema):
     """
@@ -76,21 +81,33 @@ class WMStatsWriter(WMStatsReader):
             self.couchDB.queue(doc)
         return self.couchDB.commit(returndocs=True)
 
+    def bulkUpdateData(self, docs, existingDocs):
+        """
+        Update documents to WMStats in bulk, breaking down to 100 docs chunks.
+        :param docs: docs to insert or update
+        :param existingDocs: dict of docId: docRev of docs already existent in wmstats
+        """
+        if isinstance(docs, dict):
+            docs = [docs]
+        for chunk in grouper(docs, 100):
+            for doc in chunk:
+                if doc['_id'] in existingDocs:
+                    revList = existingDocs[doc['_id']].split('-')
+                    # update the revision number and keep the history of the revision
+                    doc['_revisions'] = {"start": int(revList[0]) + 1, "ids": [str(int(revList[1]) + 1), revList[1]]}
+                else:
+                    # then create a random 10 digits uid for the first revision number, required by new_edits=False
+                    firstId = "%10d" % random.randrange(9999999999)
+                    doc['_revisions'] = {"start": 1, "ids": [firstId]}
+                self.couchDB.queue(doc)
+
+            logging.info("Committing bulk of %i docs ...", len(chunk))
+            self.couchDB.commit(new_edits=False)
+        return
+
     def insertRequest(self, schema):
         doc = monitorDocFromRequestSchema(schema)
         return self.insertGenericRequest(doc)
-
-    def insertGenericRequest(self, doc):
-        result = self.couchDB.updateDocument(doc['_id'], self.couchapp,
-                                             'insertRequest',
-                                             fields={'doc': JSONEncoder().encode(doc)})
-        self.updateRequestStatus(doc['_id'], "new")
-        return result
-
-    def updateRequestStatus(self, request, status):
-        statusTime = {'status': status, 'update_time': int(time.time())}
-        return self.couchDB.updateDocument(request, self.couchapp, 'requestStatus',
-                                           fields={'request_status': JSONEncoder().encode(statusTime)})
 
     def updateTeam(self, request, team):
         return self.couchDB.updateDocument(request, self.couchapp, 'team',
@@ -126,19 +143,36 @@ class WMStatsWriter(WMStatsReader):
                                         'generalFields',
                                         fields={'general_fields': JSONEncoder().encode(doc)})
 
-    def updateAgentInfo(self, agentInfo):
+    def updateAgentInfo(self, agentInfo, propertiesToKeep=None):
         """
         replace the agentInfo document with new one.
+        :param agentInfo: dictionary for agent info
+        :param propertiesToKeep: list of properties to keep original value
+        :return: None
         """
         try:
             exist_doc = self.couchDB.document(agentInfo["_id"])
             agentInfo["_rev"] = exist_doc["_rev"]
+            if propertiesToKeep and isinstance(propertiesToKeep, list):
+                for prop in propertiesToKeep:
+                    if prop in exist_doc:
+                        agentInfo[prop] = exist_doc[prop]
+
         except CouchNotFoundError:
             # this means document is not exist so we will just insert
             pass
         finally:
             result = self.couchDB.commitOne(agentInfo)
         return result
+
+    def updateAgentInfoInPlace(self, agentURL, agentInfo):
+        """
+        :param agentInfo: dictionary for agent info
+        :return: document update status
+
+        update agentInfo in couch in place without replacing a doucment
+        """
+        return self.couchDB.updateDocument(agentURL, self.couchapp, 'agentInfo', fields=agentInfo)
 
     def updateLogArchiveLFN(self, jobNames, logArchiveLFN):
         for jobName in jobNames:

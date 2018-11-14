@@ -213,12 +213,14 @@ class Report(object):
         Create a JSON version of the Report.
         """
         jsonReport = {}
+        jsonReport["WorkerNodeInfo"] = self.getWorkerNodeInfo()
         jsonReport["task"] = self.getTaskName()
         jsonReport["steps"] = {}
         jsonReport["skippedFiles"] = self.getAllSkippedFiles()
         jsonReport["fallbackFiles"] = self.getAllFallbackFiles()
         jsonReport["Campaign"] = self.getCampaign()
         jsonReport["PrepID"] = self.getPrepID()
+        jsonReport["EOSLogURL"] = self.getLogURL()
 
         for stepName in self.listSteps():
             reportStep = self.retrieveStep(stepName)
@@ -227,9 +229,9 @@ class Report(object):
 
             stepTimes = self.getTimes(stepName)
 
-            if stepTimes["startTime"] != None:
+            if stepTimes["startTime"] is not None:
                 stepTimes["startTime"] = int(stepTimes["startTime"])
-            if stepTimes["stopTime"] != None:
+            if stepTimes["stopTime"] is not None:
                 stepTimes["stopTime"] = int(stepTimes["stopTime"])
 
             jsonStep["start"] = stepTimes["startTime"]
@@ -553,16 +555,22 @@ class Report(object):
             self.addStep(stepName, status=1)
 
         stepSection = self.retrieveStep(stepName)
-
         errorCount = getattr(stepSection.errors, "errorCount", 0)
         errEntry = "error%s" % errorCount
         stepSection.errors.section_(errEntry)
         errDetails = getattr(stepSection.errors, errEntry)
         errDetails.exitCode = exitCode
         errDetails.type = str(errorType)
-        errDetails.details = errorDetails
+
+        if hasattr(errorDetails, "decode"):
+            # Fix for the unicode encoding issue, #8043
+            # interprets this string using utf-8 codec and ignoring any errors
+            errDetails.details = errorDetails.decode('utf-8', 'ignore')
+        else:
+            errDetails.details = errorDetails
 
         setattr(stepSection.errors, "errorCount", errorCount + 1)
+        self.setStepStatus(stepName=stepName, status=exitCode)
         return
 
     def addSkippedFile(self, lfn, pfn):
@@ -1513,3 +1521,24 @@ class Report(object):
                     delattr(source.files, "file%d" % fileNum)
                 source.files.fileCount = 0
         return
+
+    def getWorkerNodeInfo(self):
+        wnInfo = {"HostName": getattr(self.data, 'hostName', ''),
+                  "MachineFeatures": getattr(self.data, 'machineFeatures', {}),
+                  "JobFeatures": getattr(self.data, 'jobFeatures', {})}
+
+        return wnInfo
+
+    def setLogURL(self, url):
+        """
+        Set log url for the this job report.
+        https://eoscmsweb.cern.ch/eos/cms/store/logs/prod/recent/
+        """
+        self.data.logURL = url
+
+    def getLogURL(self):
+        """
+        _getLogURL_
+        Return the log URL
+        """
+        return getattr(self.data, 'logURL', '')

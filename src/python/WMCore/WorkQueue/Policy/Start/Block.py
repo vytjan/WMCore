@@ -4,10 +4,12 @@ WorkQueue splitting by block
 
 """
 from __future__ import print_function, division
-
+import os
+import logging
 from math import ceil
 from WMCore.WorkQueue.Policy.Start.StartPolicyInterface import StartPolicyInterface
 from WMCore.Services.SiteDB.SiteDB import SiteDBJSON as SiteDB
+from WMCore.Services.CRIC.CRIC import CRIC
 from WMCore.WorkQueue.WorkQueueExceptions import WorkQueueWMSpecError
 from WMCore.WorkQueue.WorkQueueUtils import makeLocationsList
 from WMCore import Lexicon
@@ -27,8 +29,11 @@ class Block(StartPolicyInterface):
 
         # Initialize modifiers of the policy
         self.blockBlackListModifier = []
-
-        self.siteDB = SiteDB()
+        if os.getenv("WMAGENT_USE_CRIC", False) or os.getenv("WMCORE_USE_CRIC", False):
+            self.cric = CRIC()
+        else:
+            self.cric = None
+            self.siteDB = SiteDB()
 
     def split(self):
         """Apply policy to spec"""
@@ -44,7 +49,10 @@ class Block(StartPolicyInterface):
                     if self.initialTask.getTrustSitelists().get('trustlists'):
                         parentList[dbsBlock["Name"]] = self.sites
                     else:
-                        parentList[dbsBlock["Name"]] = self.siteDB.PNNstoPSNs(dbsBlock['PhEDExNodeList'])
+                        if self.cric:
+                            parentList[dbsBlock["Name"]] = self.cric.PNNstoPSNs(dbsBlock['PhEDExNodeList'])
+                        else:
+                            parentList[dbsBlock["Name"]] = self.siteDB.PNNstoPSNs(dbsBlock['PhEDExNodeList'])
 
             # there could be 0 event files in that case we can't estimate the number of jobs created.
             # We set Jobs to 1 for that case.
@@ -114,14 +122,16 @@ class Block(StartPolicyInterface):
                 # Don't duplicate blocks rejected before or blocks that were included and therefore are now in the blacklist
                 continue
             if task.getLumiMask() and blockName not in maskedBlocks:
+                logging.warning("Block %s doesn't pass the lumi mask constraints", blockName)
                 self.rejectedWork.append(blockName)
                 continue
 
             block = dbs.getDBSSummaryInfo(datasetPath, block=blockName)
             # blocks with 0 valid files should be ignored
             # - ideally they would be deleted but dbs can't delete blocks
-            if not block['NumberOfFiles'] or block['NumberOfFiles'] == '0':
-                self.rejectedWork.append(blockName)
+            if int(block.get('NumberOfFiles', 0)) == 0:
+                logging.warning("Block %s being rejected for lack of valid files to process", blockName)
+                self.badWork.append(blockName)
                 continue
 
             # check lumi restrictions
@@ -152,6 +162,7 @@ class Block(StartPolicyInterface):
                     runs = runs.intersection(runWhiteList)
                 # any runs left are ones we will run on, if none ignore block
                 if not runs:
+                    logging.warning("Block %s doesn't pass the runs constraints", blockName)
                     self.rejectedWork.append(blockName)
                     continue
 
@@ -188,7 +199,10 @@ class Block(StartPolicyInterface):
             if task.getTrustSitelists().get('trustlists'):
                 self.data[block['block']] = self.sites
             else:
-                self.data[block['block']] = self.siteDB.PNNstoPSNs(dbs.listFileBlockLocation(block['block']))
+                if self.cric:
+                    self.data[block['block']] = self.cric.PNNstoPSNs(dbs.listFileBlockLocation(block['block']))
+                else:
+                    self.data[block['block']] = self.siteDB.PNNstoPSNs(dbs.listFileBlockLocation(block['block']))
 
             # TODO: need to decide what to do when location is no find.
             # There could be case for network problem (no connection to dbs, phedex)

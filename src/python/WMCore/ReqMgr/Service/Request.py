@@ -14,6 +14,8 @@ from WMCore.Lexicon import sanitizeURL
 from WMCore.REST.Format import JSONFormat, PrettyJSONFormat
 from WMCore.REST.Server import RESTEntity, restcall, rows
 from WMCore.REST.Validation import validate_str
+from WMCore.REST.Auth import get_user_info
+
 from WMCore.ReqMgr.DataStructs.ReqMgrConfigDataCache import ReqMgrConfigDataCache
 from WMCore.ReqMgr.DataStructs.RequestError import InvalidSpecParameterValue
 from WMCore.ReqMgr.DataStructs.RequestStatus import (REQUEST_STATE_LIST,
@@ -70,6 +72,8 @@ class Request(RESTEntity):
             request_args = json.loads(data)
         else:
             request_args = {}
+        cherrypy.log('Updating request "%s" with these user-provided args: %s' % (requestName, request_args))
+
         # In case key args are also passed and request body also exists.
         # If the request.body is dictionally update the key args value as well
         if isinstance(request_args, dict):
@@ -373,18 +377,21 @@ class Request(RESTEntity):
             childrenRequestNames.extend(self._retrieveResubmissionChildren(child['id']))
         return childrenRequestNames
 
-    def _handleNoStatusUpdate(self, workload, request_args):
+    def _handleNoStatusUpdate(self, workload, request_args, dn):
         """
         For no-status update, we only support the following parameters:
          1. RequestPriority
          2. Global workqueue statistics, while acquiring a workflow
         """
-        if 'RequestPriority' in request_args and len(request_args) == 1:
+        if 'RequestPriority' in request_args:
+            # Yes, we completely ignore any other arguments posted by the user (web UI case)
+            request_args = {'RequestPriority': request_args['RequestPriority']}
             # must update three places: GQ elements, workload_cache and workload spec
             self.gq_service.updatePriority(workload.name(), request_args['RequestPriority'])
-            report = self.reqmgr_db_service.updateRequestProperty(workload.name(), request_args)
+            report = self.reqmgr_db_service.updateRequestProperty(workload.name(), request_args, dn)
             workload.setPriority(request_args['RequestPriority'])
             workload.saveCouchUrl(workload.specUrl())
+            cherrypy.log('Updating priority for request "%s" to %s' % (workload.name(), request_args['RequestPriority']))
         elif workqueue_stat_validation(request_args):
             report = self.reqmgr_db_service.updateRequestStats(workload.name(), request_args)
         else:
@@ -409,7 +416,7 @@ class Request(RESTEntity):
             request_args['HardTimeout'] = request_args['SoftTimeout'] + request_args['GracePeriod']
 
         # Only allow extra value update for assigned status
-        cherrypy.log("INFO: Assign request %s, input args: %s ..." % (workload.name(), request_args))
+        cherrypy.log("Assign request %s, input args: %s ..." % (workload.name(), request_args))
         try:
             workload.updateArguments(request_args)
         except Exception as ex:
@@ -423,6 +430,11 @@ class Request(RESTEntity):
 
         # by default, it contains all unmerged LFNs (used by sites to protect the unmerged area)
         request_args['OutputModulesLFNBases'] = workload.listAllOutputModulesLFNBases()
+
+        # Add parentage relation for step chain, task chain:
+        chainMap = workload.getChainParentageSimpleMapping()
+        if chainMap:
+            request_args["ChainParentageMap"] = chainMap
 
         # save the spec first before update the reqmgr request status to prevent race condition
         # when workflow is pulled to GQ before site white list is updated
@@ -447,15 +459,16 @@ class Request(RESTEntity):
             for req_name in cascade_list:
                 self.reqmgr_db_service.updateRequestStatus(req_name, req_status, dn)
 
+        cherrypy.log('Updating request status for request "%s" to %s. Cascade mode: %s' % (workload.name(), req_status, cascade))
         # then update original workflow status in couchdb
         report = self.reqmgr_db_service.updateRequestStatus(workload.name(), req_status, dn)
         return report
 
     def _updateRequest(self, workload, request_args):
-        dn = cherrypy.request.user.get("dn", "unknown")
+        dn = get_user_info().get("dn", "unknown")
 
         if "RequestStatus" not in request_args:
-            report = self._handleNoStatusUpdate(workload, request_args)
+            report = self._handleNoStatusUpdate(workload, request_args, dn)
         else:
             req_status = request_args["RequestStatus"]
             if len(request_args) == 2 and req_status == "assignment-approved":
@@ -512,8 +525,6 @@ class Request(RESTEntity):
         # Add initial priority only for the creation of the request
         request_args['InitialPriority'] = request_args["RequestPriority"]
 
-        # TODO: remove this after reqmgr2 replice reqmgr (reqmgr2Only)
-        request_args['ReqMgr2Only'] = True
         return
 
     @restcall(formats=[('application/json', JSONFormat())])
@@ -545,7 +556,7 @@ class Request(RESTEntity):
         for workload, request_args in workload_pair_list:
             self._update_additional_request_args(workload, request_args)
 
-            cherrypy.log("INFO: Create request, input args: %s ..." % request_args)
+            cherrypy.log("Create request, input args: %s ..." % request_args)
             workload.saveCouch(request_args["CouchURL"], request_args["CouchWorkloadDBName"],
                                metadata=request_args)
             out.append({'request': workload.name()})

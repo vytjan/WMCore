@@ -27,6 +27,7 @@ import os.path
 import threading
 from httplib import HTTPException
 from Utils.Timers import timeFunction
+from Utils.IteratorTools import grouper
 from WMCore.ACDC.DataCollectionService import DataCollectionService
 from WMCore.DAOFactory import DAOFactory
 from WMCore.Database.CouchUtils import CouchConnectionError
@@ -65,11 +66,11 @@ class ErrorHandlerPoller(BaseWorkerThread):
                                      dbinterface=myThread.dbi)
         self.changeState = ChangeState(self.config)
 
-        self.maxRetries = self.config.ErrorHandler.maxRetries
-        if not isinstance(self.maxRetries, dict):
-            self.maxRetries = {'default': self.maxRetries}
-        if 'default' not in self.maxRetries:
-            raise ErrorHandlerException('Max retries for the default job type must be specified')
+        if hasattr(self.config, "Tier0Feeder"):
+            self.reqAuxDB = None
+            self.maxRetries = self.config.ErrorHandler.maxRetries
+        else:
+            self.reqAuxDB = ReqMgrAux(self.config.General.ReqMgr2ServiceURL)
 
         self.exitCodesNoRetry = []
         self.maxProcessSize = getattr(self.config.ErrorHandler, 'maxProcessSize', 250)
@@ -83,14 +84,33 @@ class ErrorHandlerPoller(BaseWorkerThread):
 
         self.dataCollection = DataCollectionService(url=config.ACDC.couchurl,
                                                     database=config.ACDC.database)
-        if hasattr(self.config, "Tier0Feeder"):
-            self.reqAuxDB = None
-        else:
-            self.reqAuxDB = ReqMgrAux(self.config.General.ReqMgr2ServiceURL)
+
+        self.setupComponentParam()
 
         self.noRetryByType = getattr(self.config.ErrorHandler, 'noRetryByType', {})
 
         return
+
+    def setupComponentParam(self):
+        """
+        Initialize (and update every cycle) some of the component's
+        parameters, according to the agent type (T0/Production) and agent config.
+        """
+        if self.reqAuxDB:
+            agentConfig = self.reqAuxDB.getWMAgentConfig(self.config.Agent.hostName)
+            self.exitCodesNoRetry = agentConfig.get("NoRetryExitCodes", [])
+
+            if agentConfig.get("UserDrainMode") and agentConfig.get("SpeedDrainMode") \
+                and agentConfig.get("SpeedDrainConfig")['NoJobRetries']['Enabled']:
+                logging.info("Agent is in speed drain mode. Not retrying any jobs.")
+                self.maxRetries = 0
+            else:
+                self.maxRetries = agentConfig.get("MaxRetries")
+
+        if not isinstance(self.maxRetries, dict):
+            self.maxRetries = {'default': self.maxRetries}
+        if 'default' not in self.maxRetries:
+            raise ErrorHandlerException('Max retries for the default job type must be specified')
 
     def setup(self, parameters=None):
         """
@@ -115,17 +135,17 @@ class ErrorHandlerPoller(BaseWorkerThread):
         Actually do the jobs exhaustion
         """
 
-        self.changeState.propagate(jobList, 'exhausted', 'retrydone')
-
         # Remove all the files in the exhausted jobs.
         logging.debug("About to fail input files for exhausted jobs")
         for job in jobList:
             job.failInputFiles()
 
         # Do not build ACDC for utilitarian job types
-        jobList = [job for job in jobList if job['type'] not in ['LogCollect', 'Cleanup']]
+        acdcJobList = [job for job in jobList if job['type'] not in ['LogCollect', 'Cleanup']]
 
-        self.handleACDC(jobList)
+        self.handleACDC(acdcJobList)
+
+        self.changeState.propagate(jobList, 'exhausted', 'retrydone')
 
         return
 
@@ -139,6 +159,11 @@ class ErrorHandlerPoller(BaseWorkerThread):
         retrydoneJobs = []
         cooloffJobs = []
         passJobs = []
+
+        if not isinstance(self.maxRetries, dict):
+            self.maxRetries = {'default': self.maxRetries}
+        if 'default' not in self.maxRetries:
+            raise ErrorHandlerException('Max retries for the default job type must be specified')
 
         # Retries < max retry count
         for job in jobList:
@@ -200,9 +225,6 @@ class ErrorHandlerPoller(BaseWorkerThread):
         passJobs = []
         exhaustJobs = []
 
-        if self.reqAuxDB:
-            self.exitCodesNoRetry = self.reqAuxDB.getWMAgentConfig(self.config.Agent.hostName).get("NoRetryExitCodes", [])
-
         for job in jobList:
             report = Report()
             reportPath = job['fwjr_path']
@@ -257,7 +279,7 @@ class ErrorHandlerPoller(BaseWorkerThread):
 
                 if len([x for x in report.getExitCodes() if x in self.exitCodesNoRetry]):
                     msg = "Job %i exhausted due to a bad exit code (%s)" % (job['id'], str(report.getExitCodes()))
-                    logging.error(msg)
+                    logging.debug(msg)
                     exhaustJobs.append(job)
                     continue
 
@@ -314,19 +336,15 @@ class ErrorHandlerPoller(BaseWorkerThread):
         for state in failure_states:
             idList = self.getJobs.execute(state="%sfailed" % state)
             logging.info("Found %d failed jobs in state %sfailed", len(idList), state)
-            while len(idList) > 0:
-                tmpList = idList[:self.maxProcessSize]
-                idList = idList[self.maxProcessSize:]
-                jobList = self.loadJobsFromList(tmpList)
+            for jobSlice in grouper(idList, self.maxProcessSize):
+                jobList = self.loadJobsFromList(jobSlice)
                 self.handleFailedJobs(jobList, state)
 
         # Run over jobs done with retries
         idList = self.getJobs.execute(state='retrydone')
         logging.info("Found %d jobs done with all retries", len(idList))
-        while len(idList) > 0:
-            tmpList = idList[:self.maxProcessSize]
-            idList = idList[self.maxProcessSize:]
-            jobList = self.loadJobsFromList(tmpList)
+        for jobSlice in grouper(idList, self.maxProcessSize):
+            jobList = self.loadJobsFromList(jobSlice)
             self.handleRetryDoneJobs(jobList)
 
         return
@@ -389,6 +407,8 @@ class ErrorHandlerPoller(BaseWorkerThread):
         And deal with it as desired.
         """
         logging.debug("Running error handling algorithm")
+        self.setupComponentParam()
+
         try:
             myThread = threading.currentThread()
             self.handleErrors()

@@ -29,6 +29,13 @@ class PyCondorAPI(object):
         """
         try:
             jobs = self.schedd.query(constraint, attr_list)
+            return jobs
+        except Exception:
+            # if there is an error, try to recreate the schedd instance
+            logging.info("Recreating Schedd instance due to query error...")
+            self.schedd = htcondor.Schedd()
+        try:
+            jobs = self.schedd.query(constraint, attr_list)
         except Exception as ex:
             jobs = None  # return None to signalize the query failed
             msg = "Condor failed to fetch schedd constraints for: %s" % constraint
@@ -37,6 +44,32 @@ class PyCondorAPI(object):
 
         return jobs
 
+    def editCondorJobs(self, job_spec, attr, value):
+        """
+        _editCondorJobs_
+
+        Edit a set of condor jobs given an attribute and value
+        job_spec can be a list of job IDs or a string specifying a constraint
+        """
+        success = False
+        try:
+            self.schedd.edit(job_spec, attr, value)
+            success = True
+        except Exception as ex:
+            # edit doesn't distinguish between an error and not matching any jobs
+            # check for this message and assume it just didn't match any jobs
+            if isinstance(ex, RuntimeError) and str(ex) == "Unable to edit jobs matching constraint":
+                success = True
+                msg = "Condor constraint did not match any jobs. "
+                msg += "Message from schedd: %s" % str(ex)
+                logging.info(msg)
+            else:
+                msg = "Condor failed to edit the jobs. "
+                msg += "Error message: %s" % str(ex)
+                logging.exception(msg)
+
+        return success
+
     def isScheddOverloaded(self):
         """
         check whether job limit is reached in local schedd.
@@ -44,6 +77,14 @@ class PyCondorAPI(object):
         ( ShadowsRunning > 9.700000000000000E-01 * MAX_RUNNING_JOBS) )
         || ( RecentDaemonCoreDutyCycle > 9.800000000000000E-01 )
         """
+        try:
+            scheddAd = self.coll.locate(htcondor.DaemonTypes.Schedd)
+            isOverloaded = scheddAd['CurbMatchmaking'].eval()
+            return isOverloaded
+        except Exception:
+            # if there is an error, try to recreate the collector instance
+            logging.info("Recreating Collector instance due to query error...")
+            self.coll = htcondor.Collector()
         try:
             scheddAd = self.coll.locate(htcondor.DaemonTypes.Schedd)
             isOverloaded = scheddAd['CurbMatchmaking'].eval()

@@ -130,16 +130,14 @@ dependencies = {
     },
     'crabclient': {
         'packages': ['WMCore.Wrappers+', 'WMCore.Credential', 'PSetTweaks', 'WMCore.Services.UserFileCache+',
-                     'WMCore.Services.SiteDB+', 'WMCore.Services.PhEDEx+', 'WMCore.Services.DBS+'],
+                     'WMCore.Services.PhEDEx+', 'WMCore.Services.DBS+'],
         'systems': ['wmc-base'],
         'modules': ['WMCore.FwkJobReport.FileInfo', 'WMCore.Services.Requests', 'WMCore.DataStructs.LumiList',
                     'WMCore.Services.Service', 'WMCore.Services.pycurl_manager', ],
     },
     'crabtaskworker': {
         'packages': ['WMCore.WorkQueue', 'WMCore.Credential', 'WMCore.Algorithms+', 'WMCore.WMSpec+',
-                     'WMCore.JobSplitting', 'WMCore.Services.SiteDB+', 'WMCore.Services.DBS+',
-                     'WMCore.Services.UserFileCache+', 'WMCore.Services.PhEDEx+', 'WMCore.Services.Dashboard+',
-                     'WMCore.Services.WMArchive+', 'Utils+'],
+                     'WMCore.JobSplitting', 'WMCore.Services+', 'Utils+'],
         'modules': ['WMCore.WMBS.File', 'WMCore.WMBS.WMBSBase', 'WMCore.WMBS.__init__'],
         'systems': ['wmc-database', 'wmc-runtime'],
     },

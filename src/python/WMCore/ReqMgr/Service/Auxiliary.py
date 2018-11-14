@@ -7,8 +7,8 @@ Teams, Groups, Software versions handling for ReqMgr.
 from __future__ import print_function, division
 
 import json
-
 import cherrypy
+import time
 
 import WMCore
 from WMCore.Database.CMSCouch import Document, CouchNotFoundError, CouchError
@@ -42,7 +42,7 @@ class Info(RESTEntity):
     def validate(self, apiobj, method, api, param, safe):
         pass
 
-    @restcall
+    @restcall(formats=[('text/plain', PrettyJSONFormat()), ('application/json', JSONFormat())])
     @tools.expires(secs=-1)
     def get(self):
         # authorization / access control:
@@ -185,7 +185,7 @@ class AuxBaseAPI(RESTEntity):
     @restcall(formats=[('application/json', JSONFormat())])
     def post(self, subName=None):
         """
-        If the document already exists, replace it with a new one.
+        Inserts a new document into the database
         """
         data = cherrypy.request.body.read()
         if not data:

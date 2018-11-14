@@ -8,7 +8,6 @@ import logging
 import os
 import os.path
 import threading
-import traceback
 
 try:
     import cPickle as pickle
@@ -120,7 +119,8 @@ def capResourceEstimates(jobGroups, constraints):
 def saveJob(job, workflow, sandbox, wmTask=None, jobNumber=0,
             owner=None, ownerDN=None, ownerGroup='', ownerRole='',
             scramArch=None, swVersion=None, agentNumber=0, numberOfCores=1,
-            inputDataset=None, inputDatasetLocations=None, allowOpportunistic=False):
+            inputDataset=None, inputDatasetLocations=None, inputPileup=None,
+            allowOpportunistic=False, agentName=''):
     """
     _saveJob_
 
@@ -136,6 +136,7 @@ def saveJob(job, workflow, sandbox, wmTask=None, jobNumber=0,
 
     job['counter'] = jobNumber
     job['agentNumber'] = agentNumber
+    job['agentName'] = agentName
     cacheDir = job.getCache()
     job['cache_dir'] = cacheDir
     job['owner'] = owner
@@ -147,11 +148,11 @@ def saveJob(job, workflow, sandbox, wmTask=None, jobNumber=0,
     job['numberOfCores'] = numberOfCores
     job['inputDataset'] = inputDataset
     job['inputDatasetLocations'] = inputDatasetLocations
+    job['inputPileup'] = inputPileup
     job['allowOpportunistic'] = allowOpportunistic
 
-    output = open(os.path.join(cacheDir, 'job.pkl'), 'w')
-    pickle.dump(job, output, pickle.HIGHEST_PROTOCOL)
-    output.close()
+    with open(os.path.join(cacheDir, 'job.pkl'), 'w') as output:
+        pickle.dump(job, output, pickle.HIGHEST_PROTOCOL)
 
     return
 
@@ -180,7 +181,9 @@ def creatorProcess(work, jobCacheDir):
         numberOfCores = work.get('numberOfCores', 1)
         inputDataset = work.get('inputDataset', None)
         inputDatasetLocations = work.get('inputDatasetLocations', None)
+        inputPileup = work.get('inputPileup', None)
         allowOpportunistic = work.get('allowOpportunistic', False)
+        agentName = work.get('agentName', '')
 
         if ownerDN is None:
             ownerDN = owner
@@ -192,10 +195,8 @@ def creatorProcess(work, jobCacheDir):
         logging.error(msg)
         raise JobCreatorException(msg)
     except Exception as ex:
-        msg = "Exception in opening work package.\n"
-        msg += str(ex)
-        msg += str(traceback.format_exc())
-        logging.error(msg)
+        msg = "Exception in opening work package. Error: %s" % str(ex)
+        logging.exception(msg)
         raise JobCreatorException(msg)
 
     try:
@@ -221,14 +222,13 @@ def creatorProcess(work, jobCacheDir):
                     numberOfCores=numberOfCores,
                     inputDataset=inputDataset,
                     inputDatasetLocations=inputDatasetLocations,
-                    allowOpportunistic=allowOpportunistic)
+                    inputPileup=inputPileup,
+                    allowOpportunistic=allowOpportunistic,
+                    agentName=agentName)
 
     except Exception as ex:
-        # Register as failure; move on
-        msg = "Exception in processing wmbsJobGroup %i\n" % wmbsJobGroup.id
-        msg += str(ex)
-        msg += str(traceback.format_exc())
-        logging.error(msg)
+        msg = "Exception in processing wmbsJobGroup %i\n. Error: %s" % (wmbsJobGroup.id, str(ex))
+        logging.exception(msg)
         raise JobCreatorException(msg)
 
     return wmbsJobGroup
@@ -371,6 +371,7 @@ class JobCreatorPoller(BaseWorkerThread):
         self.defaultJobType = config.JobCreator.defaultJobType
         self.limit = getattr(config.JobCreator, 'fileLoadLimit', 500)
         self.agentNumber = int(getattr(config.Agent, 'agentNumber', 0))
+        self.agentName = getattr(config.Agent, 'hostName', '')
         self.glideinLimits = getattr(config.JobCreator, 'GlideInRestriction', None)
 
         # initialize the alert framework (if available - config.Alert present)
@@ -434,8 +435,8 @@ class JobCreatorPoller(BaseWorkerThread):
                 logging.error(
                     'There was a connection problem during the JobCreator algorithm, I will try again next cycle')
             else:
-                msg = "Failed to execute JobCreator \n%s\n\n%s" % (ex, traceback.format_exc())
-                logging.error(msg)
+                msg = "Failed to execute JobCreator. Error: %s" % str(ex)
+                logging.exception(msg)
                 raise JobCreatorException(msg)
 
     def terminate(self, params):
@@ -578,7 +579,8 @@ class JobCreatorPoller(BaseWorkerThread):
                                'ownerGroup': wmWorkload.getOwner().get('vogroup', ''),
                                'ownerRole': wmWorkload.getOwner().get('vorole', ''),
                                'numberOfCores': 1,
-                               'inputDataset': wmTask.getInputDatasetPath()}
+                               'inputDataset': wmTask.getInputDatasetPath(),
+                               'inputPileup': wmTask.getInputPileupDatasets()}
                 try:
                     maxCores = 1
                     stepNames = wmTask.listAllStepNames()
@@ -604,10 +606,11 @@ class JobCreatorPoller(BaseWorkerThread):
                     tempDict = {}
                     tempDict.update(processDict)
                     tempDict['jobGroup'] = wmbsJobGroup
-                    tempDict['swVersion'] = wmTask.getSwVersion()
+                    tempDict['swVersion'] = wmTask.getSwVersion(allSteps=True)
                     tempDict['scramArch'] = wmTask.getScramArch()
                     tempDict['jobNumber'] = jobNumber
                     tempDict['agentNumber'] = self.agentNumber
+                    tempDict['agentName'] = self.agentName
                     tempDict['inputDatasetLocations'] = wmbsJobGroup.getLocationsForJobs()
                     tempDict['allowOpportunistic'] = allowOpport
 

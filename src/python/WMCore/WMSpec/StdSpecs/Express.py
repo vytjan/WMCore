@@ -212,11 +212,13 @@ class ExpressWorkloadFactory(StdBase):
 
                 for alcaSkimOutLabel, alcaSkimOutInfo in alcaSkimOutMods.items():
 
-                    if alcaSkimOutInfo['dataTier'] == "ALCAPROMPT" and self.alcaHarvestDir != None:
+                    if alcaSkimOutInfo['dataTier'] == "ALCAPROMPT" and \
+                            (self.alcaHarvestCondLFNBase is not None or self.alcaHarvestLumiURL is not None):
                         harvestTask = self.addAlcaHarvestTask(alcaSkimTask, alcaSkimOutLabel,
                                                               alcapromptdataset=alcaSkimOutInfo['filterName'],
                                                               condOutLabel=self.alcaHarvestOutLabel,
-                                                              condUploadDir=self.alcaHarvestDir,
+                                                              condLFNBase=self.alcaHarvestCondLFNBase,
+                                                              lumiURL=self.alcaHarvestLumiURL,
                                                               uploadProxy=self.dqmUploadProxy,
                                                               doLogCollect=True)
 
@@ -262,7 +264,7 @@ class ExpressWorkloadFactory(StdBase):
         dataTier = getattr(parentOutputModule, "dataTier")
         mergeTask.setInputReference(parentTaskCmssw, outputModule=parentOutputModuleName, dataTier=dataTier)
 
-        self.addDashboardMonitoring(mergeTask)
+        self.addRuntimeMonitors(mergeTask)
         mergeTaskCmssw = mergeTask.makeStep("cmsRun1")
         mergeTaskCmssw.setStepType("CMSSW")
 
@@ -316,8 +318,8 @@ class ExpressWorkloadFactory(StdBase):
         return mergeTask
 
     def addAlcaHarvestTask(self, parentTask, parentOutputModuleName,
-                           alcapromptdataset, condOutLabel, condUploadDir, uploadProxy,
-                           parentStepName="cmsRun1", doLogCollect=True):
+                           alcapromptdataset, condOutLabel, condLFNBase, lumiURL,
+                           uploadProxy, parentStepName="cmsRun1", doLogCollect=True):
         """
         _addAlcaHarvestTask_
 
@@ -331,7 +333,7 @@ class ExpressWorkloadFactory(StdBase):
         mySplitArgs['timeout'] = self.alcaHarvestTimeout
 
         harvestTask = parentTask.addTask("%sAlcaHarvest%s" % (parentTask.name(), parentOutputModuleName))
-        self.addDashboardMonitoring(harvestTask)
+        self.addRuntimeMonitors(harvestTask)
         harvestTaskCmssw = harvestTask.makeStep("cmsRun1")
         harvestTaskCmssw.setStepType("CMSSW")
 
@@ -363,7 +365,7 @@ class ExpressWorkloadFactory(StdBase):
         parentTaskCmssw = parentTask.getStep(parentStepName)
         parentOutputModule = parentTaskCmssw.getOutputModule(parentOutputModuleName)
 
-        dataTier=getattr(parentOutputModule, "dataTier")
+        dataTier = getattr(parentOutputModule, "dataTier")
         harvestTask.setInputReference(parentTaskCmssw, outputModule=parentOutputModuleName, dataTier=dataTier)
 
         harvestTask.setSplittingAlgorithm("AlcaHarvest",
@@ -385,8 +387,9 @@ class ExpressWorkloadFactory(StdBase):
 
         harvestTaskConditionHelper = harvestTaskCondition.getTypeHelper()
         harvestTaskConditionHelper.setRunNumber(self.runNumber)
-        harvestTaskConditionHelper.setConditionOutputLabel(condOutLabel+"ALCAPROMPT")
-        harvestTaskConditionHelper.setConditionDir(condUploadDir)
+        harvestTaskConditionHelper.setConditionOutputLabel(condOutLabel + "ALCAPROMPT")
+        harvestTaskConditionHelper.setConditionLFNBase(condLFNBase)
+        harvestTaskConditionHelper.setLuminosityURL(lumiURL)
 
         self.addOutputModule(harvestTask, condOutLabel,
                              primaryDataset=getattr(parentOutputModule, "primaryDataset"),
@@ -425,7 +428,7 @@ class ExpressWorkloadFactory(StdBase):
         conditionTaskBogus = conditionTask.makeStep("bogus")
         conditionTaskBogus.setStepType("DQMUpload")
 
-        dataTier=getattr(parentOutputModule, "dataTier")
+        dataTier = getattr(parentOutputModule, "dataTier")
         conditionTask.setInputReference(parentTaskCmssw, outputModule=parentOutputModuleName, dataTier=dataTier)
 
         conditionTask.applyTemplates()
@@ -478,7 +481,8 @@ class ExpressWorkloadFactory(StdBase):
                     "StreamName": {"optional": False},
                     "SpecialDataset": {"optional": False},
                     "AlcaHarvestTimeout": {"type": int, "optional": False},
-                    "AlcaHarvestDir": {"optional": False, "null": True},
+                    "AlcaHarvestCondLFNBase": {"optional": False, "null": True},
+                    "AlcaHarvestLumiURL": {"optional": False, "null": True},
                     "AlcaSkims": {"type": makeList, "optional": False},
                     "DQMSequences": {"type": makeList, "attr": "dqmSequences", "optional": False},
                     "Outputs": {"type": makeList, "optional": False},
@@ -489,6 +493,17 @@ class ExpressWorkloadFactory(StdBase):
                     "MaxLatency": {"type": int, "optional": False},
 
                     }
+        baseArgs.update(specArgs)
+        StdBase.setDefaultArgumentsProperty(baseArgs)
+        return baseArgs
+
+    @staticmethod
+    def getWorkloadAssignArgs():
+        baseArgs = StdBase.getWorkloadAssignArgs()
+        specArgs = {
+            "Override": {"default": {"eos-lfn-prefix": "root://eoscms.cern.ch//eos/cms/store/logs/prod/recent/Express"},
+                         "type": dict},
+            }
         baseArgs.update(specArgs)
         StdBase.setDefaultArgumentsProperty(baseArgs)
         return baseArgs
