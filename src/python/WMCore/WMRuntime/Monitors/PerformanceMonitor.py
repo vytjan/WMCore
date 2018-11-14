@@ -198,16 +198,10 @@ class PerformanceMonitor(WMRuntimeMonitor):
             msg += "command = %s\n" % self.monitorCommand
             logging.error(msg)
             return
-        # FIXME: making it backwards compatible. Keep only the "else" block in HG1801
-        if self.maxRSS is not None and self.maxRSS >= (1024 * 1024):
-            # then workload value is still in KiB (old way)
-            rss = int(output[2])
-            vsize = int(output[3])
-        else:
-            # ps returns data in kiloBytes, let's make it megaBytes
-            # I'm so confused with these megabytes and mebibytes...
-            rss = int(output[2]) // 1000  # convert it to MiB
-            vsize = int(output[3]) // 1000  # convert it to MiB
+        # ps returns data in kiloBytes, let's make it megaBytes
+        # I'm so confused with these megabytes and mebibytes...
+        rss = int(output[2]) // 1000  # convert it to MiB
+        vsize = int(output[3]) // 1000  # convert it to MiB
         logging.info("Retrieved following performance figures:")
         logging.info("RSS: %s;  VSize: %s; PCPU: %s; PMEM: %s", output[2], output[3],
                      output[4], output[5])
