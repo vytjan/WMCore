@@ -170,5 +170,8 @@ dependencies = {
                     'WMCore.Services.pycurl_manager'],
         'statics': ['src/couchapps/ACDC+',
                     'src/couchapps/GroupUser+']
+    },
+    't0': {
+        'systems': ['wmagent']
     }
 }
