@@ -170,5 +170,19 @@ dependencies = {
                     'WMCore.Services.pycurl_manager'],
         'statics': ['src/couchapps/ACDC+',
                     'src/couchapps/GroupUser+']
+    },
+    't0': {
+        'packages': ['WMCore.Agent+', 'WMCore.Algorithms+',
+                     'WMCore.JobStateMachine', 'WMComponent+',
+                     'WMCore.ThreadPool',
+                     'WMCore.BossAir+', 'WMCore.Credential',
+                     'WMCore.JobSplitting+', 'WMCore.ProcessPool',
+                     'WMCore.Services+', 'WMCore.WMSpec+',
+                     'WMCore.WMBS+', 'WMCore.ResourceControl+'],
+        'systems': ['wmc-web', 'wmc-database', 'workqueue', 'wmc-runtime'],
+        'statics': ['src/javascript/WMCore/WebTools/Agent',
+                    'src/javascript/WMCore/WebTools/WMBS',
+                    'src/javascript/external/graphael',
+                    'src/templates/WMCore/WebTools/WMBS'],
     }
 }
