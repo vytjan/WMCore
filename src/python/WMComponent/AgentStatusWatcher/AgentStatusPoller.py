@@ -8,6 +8,7 @@ Perform general agent monitoring, like:
 import time
 import logging
 import threading
+from CMSMonitoring.StompAMQ import StompAMQ
 from pprint import pformat
 from Utils.Timers import timeFunction
 from Utils.Utilities import numberCouchProcess

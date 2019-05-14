@@ -1,9 +1,10 @@
 from __future__ import (division, print_function)
 import time
+from CMSMonitoring.StompAMQ import StompAMQ
 from pprint import pformat
 from WMCore.REST.CherryPyPeriodicTask import CherryPyPeriodicTask
 from WMCore.Services.WMStats.WMStatsWriter import WMStatsWriter, convertToServiceCouchDoc
-from WMCore.Services.StompAMQ.StompAMQ import StompAMQ
+
 
 
 class HeartbeatMonitorBase(CherryPyPeriodicTask):
